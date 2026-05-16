@@ -35,7 +35,7 @@ const githubRepos = [
 
 const Projects = () => {
   return (
-    <section id="projects" className="py-10 md:py-12 scroll-mt-20">
+    <section id="projects" className="py-10 md:py-12 scroll-mt-20 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-150">
       <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
         <div>
             <h2 className="text-3xl font-bold flex items-center gap-3 text-slate-800 dark:text-slate-100">

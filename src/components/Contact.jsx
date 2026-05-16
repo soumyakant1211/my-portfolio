@@ -21,7 +21,7 @@ const WhatsappIcon = () => (
 const Contact = () => {
   return (
     <>
-      <section id="contact" className="py-10 md:py-12 scroll-mt-20 flex flex-col items-center text-center relative">
+      <section id="contact" className="py-6 md:py-8 scroll-mt-20 flex flex-col items-center text-center relative animate-in fade-in slide-in-from-bottom-4 duration-700 delay-200">
         <p className="text-violet-500 font-mono mb-4 text-sm font-medium">06. What's Next?</p>
         <h2 className="text-3xl md:text-5xl font-bold mb-6 text-slate-900 dark:text-slate-50 max-w-2xl leading-tight">Open to SDET & QA Automation Opportunities</h2>
         

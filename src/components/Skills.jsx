@@ -69,7 +69,7 @@ const skillCategories = [
 
 const Skills = () => {
   return (
-    <section id="skills" className="py-10 md:py-12 scroll-mt-20">
+    <section id="skills" className="py-10 md:py-12 scroll-mt-20 animate-in fade-in slide-in-from-bottom-4 duration-700">
       <h2 className="text-3xl font-bold mb-12 flex items-center gap-3 text-slate-800 dark:text-slate-100">
         <span className="text-violet-500 font-mono">02.</span> Core Skills
       </h2>
@@ -78,7 +78,7 @@ const Skills = () => {
         {skillCategories.map((category, index) => (
           <div 
             key={index}
-            className="p-6 md:p-8 rounded-3xl glass border border-transparent hover:border-violet-500/30 dark:hover:border-violet-500/20 transition-all hover:shadow-2xl hover:shadow-violet-500/5 group"
+            className="p-8 rounded-3xl glass hover:-translate-y-2 hover:scale-[1.02] hover:shadow-2xl hover:shadow-violet-500/10 transition-all duration-300 border border-transparent hover:border-violet-500/30 group"
           >
             <div className="flex items-center gap-4 mb-6">
               <div className="p-3 rounded-2xl bg-violet-100 dark:bg-violet-900/40 text-violet-600 dark:text-violet-400 group-hover:scale-110 group-hover:bg-violet-500 group-hover:text-white shadow-sm transition-all">

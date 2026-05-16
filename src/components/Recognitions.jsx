@@ -29,7 +29,7 @@ const recognitions = [
 
 const Recognitions = () => {
   return (
-    <section id="recognitions" className="py-10 md:py-12 scroll-mt-20">
+    <section id="recognitions" className="py-10 md:py-12 scroll-mt-20 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-100">
       <h2 className="text-3xl font-bold mb-12 flex items-center gap-3 text-slate-800 dark:text-slate-100">
         <span className="text-violet-500 font-mono">03.</span> Recognitions
       </h2>

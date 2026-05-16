@@ -2,7 +2,7 @@ import { ArrowRight, Download, Terminal, CheckCircle2, Play } from 'lucide-react
 
 const Hero = () => {
   return (
-    <section id="about" className="relative pt-24 pb-10 min-h-[90vh] flex flex-col justify-center overflow-hidden">
+    <section id="about" className="relative pt-24 pb-10 min-h-[90vh] flex flex-col justify-center overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-700">
       {/* Background Glows */}
       <div className="absolute top-[10%] right-[15%] w-[400px] h-[400px] lg:w-[600px] lg:h-[600px] bg-violet-600/20 rounded-full blur-[120px] -z-10 pointer-events-none" />
       <div className="absolute bottom-[0%] left-[5%] w-[300px] h-[300px] lg:w-[500px] lg:h-[500px] bg-fuchsia-600/20 rounded-full blur-[100px] -z-10 pointer-events-none" />
