@@ -1,8 +1,18 @@
-import { Code2, Bug, GitBranch, Cloud, Users, Webhook } from 'lucide-react';
+import { Code2, Bug, GitBranch, Webhook, Cloud, GitFork, Sparkles } from 'lucide-react';
 
 const skillCategories = [
   {
-    title: "Programming & Scripting",
+    title: "Automation",
+    icon: <Bug size={24} />,
+    items: [
+      "Selenium", 
+      "Playwright",
+      "Robot Framework", 
+      "PyTest"
+    ]
+  },
+  {
+    title: "Languages",
     icon: <Code2 size={24} />,
     items: [
       "Python", 
@@ -10,63 +20,61 @@ const skillCategories = [
     ]
   },
   {
-    title: "Test Automation & QA",
-    icon: <Bug size={24} />,
-    items: [
-        "Selenium", 
-        "Playwright",
-        "PyTest", 
-        "Robot Framework", 
-        "Manual Testing", 
-        "Test Planning & Execution", 
-        "Defect Analysis"
-    ]
-  },
-  {
-    title: "CI/CD & Dev Practices",
+    title: "CI/CD",
     icon: <GitBranch size={24} />,
     items: [
         "Jenkins", 
         "CircleCI", 
-        "Git", 
-        "BitBucket"
+        "GitHub Actions"
     ]
   },
   {
-    title: "API & Integration Testing",
-    icon: <Webhook size={24} />,
-    items: [
-        "Postman"
-    ]
-  },
-  {
-    title: "Cloud & Platforms",
+    title: "Cloud",
     icon: <Cloud size={24} />,
     items: [
-        "AWS S3", 
-        "AWS IAM", 
+        "AWS S3",
+        "AWS IAM",
         "Cloud Workflows"
     ]
   },
   {
-    title: "Other",
-    icon: <Users size={24} />,
+    title: "API Testing",
+    icon: <Webhook size={24} />,
     items: [
-        "Agile / Scrum", 
-        "Client Communication", 
-        "Mentoring"
+        "Postman",
+        "REST Assured",
+        "Requests"
+    ]
+  },
+  {
+    title: "Tools & VCS",
+    icon: <GitFork size={24} />,
+    items: [
+        "Git",
+        "GitHub",
+        "Bitbucket"
+    ]
+  },
+  {
+    title: "Currently Exploring",
+    icon: <Sparkles size={24} />,
+    items: [
+        "Agentic AI",
+        "AI-Assisted Testing",
+        "LangChain",
+        "Modern Playwright"
     ]
   }
 ];
 
 const Skills = () => {
   return (
-    <section id="skills" className="py-20 scroll-mt-20">
+    <section id="skills" className="py-10 md:py-12 scroll-mt-20">
       <h2 className="text-3xl font-bold mb-12 flex items-center gap-3 text-slate-800 dark:text-slate-100">
         <span className="text-violet-500 font-mono">02.</span> Core Skills
       </h2>
       
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
         {skillCategories.map((category, index) => (
           <div 
             key={index}

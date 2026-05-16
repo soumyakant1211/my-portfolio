@@ -19,6 +19,15 @@ const Navbar = ({ darkMode, toggleTheme }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('about');
 
+  // Force scroll to top and clear hash on hard refresh
+  useEffect(() => {
+    if (window.history.scrollRestoration) {
+      window.history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+    window.history.replaceState(null, null, window.location.pathname);
+  }, []);
+
   useEffect(() => {
     const handleScroll = () => {
       const sections = links.map(link => document.getElementById(link.toLowerCase()));
@@ -36,7 +45,9 @@ const Navbar = ({ darkMode, toggleTheme }) => {
       if (currentSection !== activeSection) {
         setActiveSection(currentSection);
         // Silently push to the URL hash history without triggering a jarring jump
-        if (window.location.hash !== `#${currentSection}`) {
+        if (currentSection === 'about') {
+           window.history.replaceState(null, null, window.location.pathname);
+        } else if (window.location.hash !== `#${currentSection}`) {
            window.history.replaceState(null, null, `#${currentSection}`);
         }
       }
@@ -53,19 +64,25 @@ const Navbar = ({ darkMode, toggleTheme }) => {
     <nav className="fixed top-0 left-0 w-full z-50 glass">
       <div className="container mx-auto px-4 md:px-8">
         <div className="flex justify-between items-center h-16">
-          <a href="#" className="text-xl font-black tracking-tight text-slate-900 dark:text-white hover:opacity-80 transition-opacity">
+          <button 
+            onClick={() => {
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+              window.history.replaceState(null, null, window.location.pathname);
+            }} 
+            className="text-xl font-black tracking-tight text-slate-900 dark:text-white hover:opacity-80 transition-opacity"
+          >
             Home
-          </a>
+          </button>
 
           {/* Desktop Menu */}
-          <div className="hidden lg:flex items-center space-x-6 xl:space-x-8">
+          <div className="hidden lg:flex items-center space-x-8 xl:space-x-12">
             {links.map((link) => {
               const isActive = activeSection === link.toLowerCase();
               return (
                 <a 
                   key={link} 
                   href={`#${link.toLowerCase()}`}
-                  className={`text-sm font-semibold transition-all ${
+                  className={`text-base font-semibold transition-all ${
                     isActive 
                       ? 'text-violet-600 dark:text-violet-400 scale-105' 
                       : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'

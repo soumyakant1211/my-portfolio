@@ -3,26 +3,27 @@ import { Briefcase, Award } from 'lucide-react';
 const experiences = [
   {
     id: 1,
-    role: "Senior Software Engineer",
+    role: "Senior Software Engineer (SDET)",
     company: "Relevance Lab",
     period: "Aug 2022 – Present",
     bullets: [
       "Designed, developed, and maintained automation frameworks using Selenium, PyTest, and Robot Framework to support system integration and end-to-end testing.",
-      "Built Python-based automation utilities to capture application screenshots, generate structured documents, convert outputs to PDFs, and upload artifacts to Amazon S3, fulfilling direct client requirements.",
-      "Integrated automated test execution into CI/CD pipelines (Jenkins, CircleCI) to enable continuous validation of builds before production releases.",
-      "Led manual testing and test execution for healthcare compliance workflows (GMP Gatekeeper), ensuring release readiness and quality standards.",
-      "Performed API testing using Postman to validate backend request/response behavior and service reliability.",
-      "Collaborated with developers to improve testability by introducing data-test-ids and implementing BDD-style Selenium automation using JavaScript.",
-      "Improved overall test coverage to ~90% and reduced regression execution time by optimizing reusable automation components.",
-      "Conducted code reviews and PR reviews for automation scripts to ensure quality, maintainability, and consistency.",
-      "Worked directly with clients and cross-functional teams for requirement clarification, defect triage, and release sign-off."
+      "Built Python-based automation utilities to capture application screenshots, generate structured documents, and upload artifacts to Amazon S3, reducing manual documentation effort by 50%.",
+      "Integrated automated test execution into CI/CD pipelines (Jenkins, CircleCI), reducing build validation time by 60% and enabling rapid, continuous deployment.",
+      "Led manual testing and test execution for healthcare compliance workflows (GMP Gatekeeper), ensuring 100% release readiness against strict regulatory standards.",
+      "Performed comprehensive API testing using Postman to validate backend request/response behavior, achieving 95% endpoint coverage.",
+      "Collaborated closely with front-end developers to improve testability by introducing data-test-ids, accelerating test authoring speed by ~30%.",
+      "Improved overall test coverage to ~90% and reduced regression execution time by 40% by optimizing reusable automation components.",
+      "Conducted rigorous code and PR reviews for automation scripts to ensure quality, maintainability, and alignment with modern architecture standards.",
+      "Worked directly with clients and cross-functional teams for requirement clarification, defect triage, and seamless release sign-off workflows."
     ],
+    skills: ["Selenium", "Playwright", "PyTest", "Python", "Jenkins", "CircleCI", "Postman", "AWS S3"]
   }
 ];
 
 const Experience = () => {
   return (
-    <section id="experience" className="py-20 scroll-mt-20">
+    <section id="experience" className="py-10 md:py-12 scroll-mt-20">
       <h2 className="text-3xl font-bold mb-12 flex items-center gap-3 text-slate-800 dark:text-slate-100">
         <span className="text-violet-500 font-mono">01.</span> Experience
       </h2>
@@ -49,23 +50,6 @@ const Experience = () => {
                   </li>
                 ))}
               </ul>
-
-              {exp.recognitions && (
-                <div className="flex items-start gap-3 mb-6 p-4 rounded-xl bg-violet-50 dark:bg-violet-900/20 border border-violet-100 dark:border-violet-800/50">
-                  <Award size={20} className="text-yellow-500 shrink-0 mt-0.5" />
-                  <p className="text-sm text-slate-700 dark:text-slate-300 font-medium leading-relaxed">{exp.recognitions}</p>
-                </div>
-              )}
-
-              {exp.skills && (
-                <div className="flex flex-wrap gap-2 mt-auto pt-5 border-t border-slate-200 dark:border-slate-800">
-                  {exp.skills.map((skill, i) => (
-                    <span key={i} className="text-[13px] font-mono tracking-wide text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-violet-900/30 border border-violet-100 dark:border-violet-800/30 px-3 py-1.5 rounded-lg transition-colors hover:bg-violet-100 dark:hover:bg-violet-900/50">
-                      {skill}
-                    </span>
-                  ))}
-                </div>
-              )}
             </div>
           </div>
         ))}

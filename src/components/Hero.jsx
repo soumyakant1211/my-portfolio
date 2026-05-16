@@ -1,11 +1,11 @@
-import { ArrowRight, Download, Sparkles, Bot, Cog, MousePointerClick, FileCheck, Terminal, Cpu, FileCode2, MonitorPlay } from 'lucide-react';
+import { ArrowRight, Download, Terminal, CheckCircle2, Play } from 'lucide-react';
 
 const Hero = () => {
   return (
-    <section id="about" className="relative pt-32 pb-20 min-h-[90vh] flex flex-col justify-center overflow-hidden">
-      {/* Advanced Modern Background Glow Elements */}
-      <div className="absolute top-[10%] right-[15%] w-[400px] h-[400px] lg:w-[600px] lg:h-[600px] bg-violet-600/20 dark:bg-violet-600/20 rounded-full blur-[120px] -z-10 pointer-events-none" />
-      <div className="absolute bottom-[0%] left-[5%] w-[300px] h-[300px] lg:w-[500px] lg:h-[500px] bg-fuchsia-600/20 dark:bg-fuchsia-600/10 rounded-full blur-[100px] -z-10 pointer-events-none" />
+    <section id="about" className="relative pt-24 pb-10 min-h-[90vh] flex flex-col justify-center overflow-hidden">
+      {/* Background Glows */}
+      <div className="absolute top-[10%] right-[15%] w-[400px] h-[400px] lg:w-[600px] lg:h-[600px] bg-violet-600/20 rounded-full blur-[120px] -z-10 pointer-events-none" />
+      <div className="absolute bottom-[0%] left-[5%] w-[300px] h-[300px] lg:w-[500px] lg:h-[500px] bg-fuchsia-600/20 rounded-full blur-[100px] -z-10 pointer-events-none" />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10 transition-all duration-700 animate-in fade-in slide-in-from-bottom-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center border-0 border-white">
@@ -17,7 +17,7 @@ const Hero = () => {
                 Hey, I am
               </p>
               
-              <h1 className="text-6xl sm:text-7xl md:text-[5.5rem] lg:text-[6.5rem] font-black tracking-tighter text-slate-900 dark:text-white leading-[0.95]">
+              <h1 className="text-6xl sm:text-7xl md:text-[4.5rem] lg:text-[5.5rem] font-black tracking-tighter text-slate-900 dark:text-white leading-[0.95]">
                 Soumyakant
                 <span className="block text-transparent bg-clip-text bg-gradient-to-r from-violet-500 via-fuchsia-500 to-indigo-500 pb-2">
                   Tripathy
@@ -27,8 +27,8 @@ const Hero = () => {
 
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mt-2">
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-violet-500/30 bg-violet-500/10 text-violet-700 dark:text-violet-300 backdrop-blur-md shadow-sm transition-transform hover:scale-105 cursor-default group">
-                <Sparkles size={16} className="animate-pulse text-yellow-500 shrink-0 group-hover:rotate-12 transition-transform" />
-                <span className="text-[13px] sm:text-sm font-bold tracking-widest uppercase mt-0.5">Senior Software Engineer</span>
+                <Terminal size={16} className="text-violet-600 dark:text-violet-400 shrink-0" />
+                <span className="text-[13px] sm:text-sm font-bold tracking-widest uppercase mt-0.5">SDET Engineer | QA Automation</span>
               </div>
             </div>
 
@@ -37,12 +37,35 @@ const Hero = () => {
                 Engineering Quality through Intelligent Automation & CI/CD.
               </h2>
               
-              <p className="text-lg text-slate-600 dark:text-slate-300 max-w-xl leading-relaxed font-medium">
-                I automate the boring stuff, catch production-crashing bugs early, and keep continuous integration pipelines green. With nearly 4 years of SDET experience, I specialize in building bulletproof software quality and robust test architectures.
-              </p>
+              <div className="space-y-4">
+                <p className="text-lg text-slate-600 dark:text-slate-300 max-w-xl leading-relaxed font-medium">
+                  I automate the boring stuff, catch production-crashing bugs early, and keep continuous integration pipelines green. 
+                </p>
+                <p className="text-lg text-slate-700 dark:text-slate-200 max-w-xl leading-relaxed font-bold border-l-4 border-violet-500 pl-4 bg-violet-500/5 dark:bg-violet-900/10 py-2">
+                  Built scalable automation frameworks reducing regression effort by 40% and improving release confidence across enterprise workflows.
+                </p>
+              </div>
+              
+              {/* Fast Scanning Summary */}
+              <div className="bg-slate-100/50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50 rounded-2xl p-5 max-w-xl shadow-sm">
+                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <a href="#experience" className="flex items-center gap-2.5 text-sm font-semibold text-slate-800 dark:text-slate-200 group hover:text-violet-600 dark:hover:text-violet-400 transition-colors cursor-pointer">
+                        <CheckCircle2 size={18} className="text-emerald-500 group-hover:scale-110 transition-transform" /> 4 Years Experience
+                    </a>
+                    <a href="#skills" className="flex items-center gap-2.5 text-sm font-semibold text-slate-800 dark:text-slate-200 group hover:text-violet-600 dark:hover:text-violet-400 transition-colors cursor-pointer">
+                        <CheckCircle2 size={18} className="text-emerald-500 group-hover:scale-110 transition-transform" /> Python • JavaScript
+                    </a>
+                    <a href="#skills" className="flex items-center gap-2.5 text-sm font-semibold text-slate-800 dark:text-slate-200 group hover:text-violet-600 dark:hover:text-violet-400 transition-colors cursor-pointer">
+                        <CheckCircle2 size={18} className="text-emerald-500 group-hover:scale-110 transition-transform" /> Selenium • Playwright
+                    </a>
+                    <a href="#skills" className="flex items-center gap-2.5 text-sm font-semibold text-slate-800 dark:text-slate-200 group hover:text-violet-600 dark:hover:text-violet-400 transition-colors cursor-pointer">
+                        <CheckCircle2 size={18} className="text-emerald-500 group-hover:scale-110 transition-transform" /> CI/CD • API Testing
+                    </a>
+                 </div>
+              </div>
             </div>
 
-            <div className="flex flex-wrap items-center gap-4 pt-10">
+            <div className="flex flex-wrap items-center gap-4 pt-6">
               <a 
                 href="#experience" 
                 className="group flex items-center gap-2 px-8 py-3.5 rounded-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold hover:scale-[1.02] transition-transform shadow-xl shadow-slate-900/10 dark:shadow-white/10"
@@ -61,79 +84,80 @@ const Hero = () => {
             </div>
           </div>
 
-          {/* Right Visual Content (Floating Abstract Glassmorphic Cards) */}
-          <div className="relative hidden lg:flex justify-center items-center h-[500px] w-full mt-10 lg:mt-0">
-            {/* Center Main Orb */}
-            <div className="absolute w-72 h-72 bg-gradient-to-tr from-violet-500 to-fuchsia-500 rounded-full blur-[50px] opacity-30 animate-[pulse_6s_ease-in-out_infinite]" />
-            
-            {/* 1. Automation */}
-            <div className="absolute top-4 left-10 glass p-4 lg:p-5 rounded-3xl animate-[bounce_5s_infinite_ease-in-out] shadow-2xl border border-white/20 dark:border-white/10 flex flex-col items-center gap-2 w-[100px] lg:w-[110px] backdrop-blur-xl z-20">
-              <div className="p-2 lg:p-3 rounded-full bg-violet-100 dark:bg-violet-900/50 text-violet-600 dark:text-violet-300">
-                 <Cog size={24} />
-              </div>
-              <span className="font-bold text-[11px] lg:text-xs text-slate-800 dark:text-slate-200 text-center">Automation</span>
-            </div>
+          {/* Right Visual Content (Engineering Terminal Mockup) */}
+          <div className="relative hidden lg:flex justify-center items-center w-full mt-10 lg:mt-0">
+             <div className="w-full max-w-[500px] rounded-2xl overflow-hidden bg-[#0d1117] border border-slate-700/50 shadow-2xl hover:shadow-violet-500/20 transition-all duration-500 hover:-translate-y-2 group">
+                
+                {/* MacOS Terminal Header */}
+                <div className="bg-[#161b22] px-4 py-3 flex items-center gap-2 border-b border-slate-800">
+                   <div className="flex gap-1.5">
+                      <div className="w-3 h-3 rounded-full bg-red-500/80"></div>
+                      <div className="w-3 h-3 rounded-full bg-amber-500/80"></div>
+                      <div className="w-3 h-3 rounded-full bg-emerald-500/80"></div>
+                   </div>
+                   <div className="mx-auto flex items-center gap-2 text-xs font-mono text-slate-400">
+                      <Terminal size={12} />
+                      bash — pytest test_suite.py
+                   </div>
+                </div>
 
-            {/* 2. Robot Framework */}
-            <div className="absolute top-10 right-4 glass p-4 lg:p-5 rounded-3xl animate-[bounce_6s_infinite_ease-in-out_reverse] shadow-2xl border border-white/20 dark:border-white/10 flex flex-col items-center gap-2 w-[100px] lg:w-[110px] backdrop-blur-xl z-20" style={{ animationDelay: '0.5s' }}>
-              <div className="p-2 lg:p-3 rounded-full bg-emerald-100 dark:bg-emerald-900/50 text-emerald-600 dark:text-emerald-300">
-                 <Bot size={24} />
-              </div>
-              <span className="font-bold text-[11px] lg:text-xs text-slate-800 dark:text-slate-200 text-center">Robot FW</span>
-            </div>
+                {/* Terminal Body */}
+                <div className="p-6 font-mono text-[13px] leading-relaxed">
+                   <div className="text-slate-400 mb-2">
+                     $ pytest -v tests/e2e/payment_flow.py --browser chromium
+                   </div>
+                   
+                   <div className="text-slate-300 mb-4 flex items-center gap-2">
+                     <Play size={14} className="text-blue-400 animate-pulse" />
+                     <span className="text-blue-400">Starting Playwright session...</span>
+                   </div>
 
-            {/* 3. Python */}
-            <div className="absolute top-1/2 -translate-y-1/2 left-0 glass p-4 lg:p-5 rounded-3xl animate-[bounce_4s_infinite_ease-in-out_reverse] shadow-2xl border border-white/20 dark:border-white/10 flex flex-col items-center gap-2 w-[100px] lg:w-[110px] backdrop-blur-xl z-20" style={{ animationDelay: '1s' }}>
-              <div className="p-2 lg:p-3 rounded-full bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300">
-                 <Terminal size={24} />
-              </div>
-              <span className="font-bold text-[11px] lg:text-xs text-slate-800 dark:text-slate-200 text-center">Python</span>
-            </div>
+                   <div className="space-y-2.5">
+                     <div className="flex items-center justify-between text-slate-300">
+                       <span className="flex items-center gap-2">
+                          <CheckCircle2 size={14} className="text-emerald-400" />
+                          test_user_login_valid_credentials
+                       </span>
+                       <span className="text-slate-500">1.24s</span>
+                     </div>
+                     <div className="flex items-center justify-between text-slate-300">
+                       <span className="flex items-center gap-2">
+                          <CheckCircle2 size={14} className="text-emerald-400" />
+                          test_cart_calculation_with_tax
+                       </span>
+                       <span className="text-slate-500">0.82s</span>
+                     </div>
+                     <div className="flex items-center justify-between text-slate-300 opacity-60 group-hover:opacity-100 transition-opacity delay-100">
+                       <span className="flex items-center gap-2">
+                          <CheckCircle2 size={14} className="text-emerald-400" />
+                          test_payment_gateway_mock_success
+                       </span>
+                       <span className="text-slate-500">2.10s</span>
+                     </div>
+                     <div className="flex items-center justify-between text-slate-300 opacity-60 group-hover:opacity-100 transition-opacity delay-200">
+                       <span className="flex items-center gap-2">
+                          <CheckCircle2 size={14} className="text-emerald-400" />
+                          test_order_confirmation_email_trigger
+                       </span>
+                       <span className="text-slate-500">1.45s</span>
+                     </div>
+                   </div>
 
-            {/* 4. CI/CD */}
-            <div className="absolute top-1/2 -translate-y-1/2 right-0 glass p-4 lg:p-5 rounded-3xl animate-[bounce_5.5s_infinite_ease-in-out] shadow-2xl border border-white/20 dark:border-white/10 flex flex-col items-center gap-2 w-[100px] lg:w-[110px] backdrop-blur-xl z-20" style={{ animationDelay: '1.5s' }}>
-              <div className="p-2 lg:p-3 rounded-full bg-rose-100 dark:bg-rose-900/50 text-rose-600 dark:text-rose-300">
-                 <Cpu size={24} />
-              </div>
-              <span className="font-bold text-[11px] lg:text-xs text-slate-800 dark:text-slate-200 text-center">CI/CD</span>
-            </div>
+                   <div className="mt-6 pt-4 border-t border-slate-800">
+                     <div className="flex items-center gap-3">
+                       <span className="px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 font-bold border border-emerald-500/30">
+                         PASS
+                       </span>
+                       <span className="text-emerald-400 font-semibold tracking-wide">142 passed in 18.43s</span>
+                     </div>
+                     <div className="text-slate-500 mt-3 text-xs tracking-wide">
+                        Coverage: <span className="text-emerald-400">92.4%</span> | Stability: <span className="text-emerald-400">99.8%</span>
+                     </div>
+                   </div>
+                </div>
 
-            {/* 5. Selenium */}
-            <div className="absolute bottom-20 left-8 glass p-4 lg:p-5 rounded-3xl animate-[bounce_6s_infinite_ease-in-out_reverse] shadow-2xl border border-white/20 dark:border-white/10 flex flex-col items-center gap-2 w-[100px] lg:w-[110px] backdrop-blur-xl z-20" style={{ animationDelay: '0.2s' }}>
-              <div className="p-2 lg:p-3 rounded-full bg-cyan-100 dark:bg-cyan-900/50 text-cyan-600 dark:text-cyan-300">
-                 <MousePointerClick size={24} />
-              </div>
-              <span className="font-bold text-[11px] lg:text-xs text-slate-800 dark:text-slate-200 text-center">Selenium</span>
-            </div>
-            
-            {/* 6. Test Report */}
-            <div className="absolute bottom-24 right-6 glass p-4 lg:p-5 rounded-3xl animate-[bounce_4.5s_infinite_ease-in-out] shadow-2xl border border-white/20 dark:border-white/10 flex flex-col items-center gap-2 w-[100px] lg:w-[110px] backdrop-blur-xl z-20" style={{ animationDelay: '2s' }}>
-              <div className="p-2 lg:p-3 rounded-full bg-amber-100 dark:bg-amber-900/50 text-amber-600 dark:text-amber-300">
-                 <FileCheck size={24} />
-              </div>
-              <span className="font-bold text-[11px] lg:text-xs text-slate-800 dark:text-slate-200 text-center">Reports</span>
-            </div>
-
-            {/* 7. JavaScript */}
-            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 glass p-4 lg:p-5 rounded-3xl animate-[bounce_5s_infinite_ease-in-out_reverse] shadow-2xl border border-white/20 dark:border-white/10 flex flex-col items-center gap-2 w-[100px] lg:w-[110px] backdrop-blur-xl z-20" style={{ animationDelay: '0.8s' }}>
-              <div className="p-2 lg:p-3 rounded-full bg-yellow-100 dark:bg-yellow-900/50 text-yellow-600 dark:text-yellow-400">
-                 <FileCode2 size={24} />
-              </div>
-              <span className="font-bold text-[11px] lg:text-xs text-slate-800 dark:text-slate-200 text-center">JavaScript</span>
-            </div>
-
-            {/* 8. Playwright */}
-            <div className="absolute top-2 left-1/2 -translate-x-1/2 glass p-4 lg:p-5 rounded-3xl animate-[bounce_5.5s_infinite_ease-in-out] shadow-2xl border border-white/20 dark:border-white/10 flex flex-col items-center gap-2 w-[100px] lg:w-[110px] backdrop-blur-xl z-20" style={{ animationDelay: '1.2s' }}>
-              <div className="p-2 lg:p-3 rounded-full bg-teal-100 dark:bg-teal-900/50 text-teal-600 dark:text-teal-400">
-                 <MonitorPlay size={24} />
-              </div>
-              <span className="font-bold text-[11px] lg:text-xs text-slate-800 dark:text-slate-200 text-center">Playwright</span>
-            </div>
-            
-            {/* Central Decorative Circle */}
-            <div className="w-64 h-64 rounded-full border-[4px] border-dashed border-violet-500/20 animate-[spin_40s_linear_infinite] absolute z-0" />
+             </div>
           </div>
-
         </div>
       </div>
     </section>

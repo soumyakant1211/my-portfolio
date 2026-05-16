@@ -20,58 +20,81 @@ const WhatsappIcon = () => (
 
 const Contact = () => {
   return (
-    <section id="contact" className="py-20 scroll-mt-20 flex flex-col items-center text-center relative">
-      <p className="text-violet-500 font-mono mb-4 text-sm font-medium">04. What's Next?</p>
-      <h2 className="text-4xl md:text-5xl font-bold mb-6 text-slate-900 dark:text-slate-50">Get In Touch</h2>
-      
-      <p className="text-slate-600 dark:text-slate-400 max-w-lg mb-8 text-lg leading-relaxed">
-        Although I'm not currently looking for any new opportunities, my inbox is always open. 
-        Whether you have a question, a project in mind, or just want to say hi, I'll try my best to get back to you!
-      </p>
-      
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-6 md:gap-10 mt-8 max-w-3xl w-full justify-items-center relative z-10">
-        {/* Cell Phone */}
-        <a href="tel:+917978898543" aria-label="Phone" className="group flex flex-col items-center gap-3 text-slate-500 dark:text-slate-400 hover:text-violet-600 dark:hover:text-violet-400 transition-all w-full">
-          <div className="p-4 rounded-full bg-slate-100 dark:bg-slate-800/50 group-hover:bg-violet-100 dark:group-hover:bg-violet-900/40 transition-colors shadow-sm">
-            <Phone size={24} />
-          </div>
-          <span className="text-sm font-medium">+91-7978898543</span>
-        </a>
-
-        {/* WhatsApp */}
-        <a href="https://wa.me/917978898543" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="group flex flex-col items-center gap-3 text-slate-500 dark:text-slate-400 hover:text-green-500 dark:hover:text-green-400 transition-all w-full">
-          <div className="p-4 rounded-full bg-slate-100 dark:bg-slate-800/50 group-hover:bg-green-100 dark:group-hover:bg-green-900/40 transition-colors shadow-sm">
-            <WhatsappIcon />
-          </div>
-          <span className="text-sm font-medium">WhatsApp</span>
-        </a>
+    <>
+      <section id="contact" className="py-10 md:py-12 scroll-mt-20 flex flex-col items-center text-center relative">
+        <p className="text-violet-500 font-mono mb-4 text-sm font-medium">06. What's Next?</p>
+        <h2 className="text-3xl md:text-5xl font-bold mb-6 text-slate-900 dark:text-slate-50 max-w-2xl leading-tight">Open to SDET & QA Automation Opportunities</h2>
         
-        {/* Email */}
-        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=soumyakant.tripathy422@gmail.com" target="_blank" rel="noopener noreferrer" aria-label="Email" className="group flex flex-col items-center gap-3 text-slate-500 dark:text-slate-400 hover:text-red-500 dark:hover:text-red-400 transition-all w-full">
-          <div className="p-4 rounded-full bg-slate-100 dark:bg-slate-800/50 group-hover:bg-red-100 dark:group-hover:bg-red-900/40 transition-colors shadow-sm">
-            <Mail size={24} />
-          </div>
-          <span className="text-sm font-medium">Email</span>
-        </a>
+        <p className="text-slate-600 dark:text-slate-400 max-w-xl mb-12 text-lg leading-relaxed font-medium">
+          I am currently exploring new engineering roles! Whether you're building modern Playwright ecosystems, AI-assisted testing frameworks, or scalable test architectures, my inbox is always open.
+        </p>
+        
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-6 md:gap-10 mt-4 max-w-3xl w-full justify-items-center relative z-10 mb-16">
+          {/* Cell Phone */}
+          <a href="tel:+917978898543" aria-label="Phone" className="group flex flex-col items-center gap-3 text-slate-500 dark:text-slate-400 hover:text-violet-600 dark:hover:text-violet-400 transition-all w-full">
+            <div className="p-4 rounded-full bg-slate-100 dark:bg-slate-800/50 group-hover:bg-violet-100 dark:group-hover:bg-violet-900/40 transition-colors shadow-sm">
+              <Phone size={24} />
+            </div>
+            <span className="text-sm font-medium">+91-7978898543</span>
+          </a>
 
-        {/* LinkedIn */}
-        <a href="https://www.linkedin.com/in/soumyakant-tripathy/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="group flex flex-col items-center gap-3 text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-all w-full">
-          <div className="p-4 rounded-full bg-slate-100 dark:bg-slate-800/50 group-hover:bg-blue-100 dark:group-hover:bg-blue-900/40 transition-colors shadow-sm">
-            <LinkedinIcon />
-          </div>
-          <span className="text-sm font-medium">LinkedIn</span>
-        </a>
+          {/* WhatsApp */}
+          <a href="https://wa.me/917978898543" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="group flex flex-col items-center gap-3 text-slate-500 dark:text-slate-400 hover:text-green-500 dark:hover:text-green-400 transition-all w-full">
+            <div className="p-4 rounded-full bg-slate-100 dark:bg-slate-800/50 group-hover:bg-green-100 dark:group-hover:bg-green-900/40 transition-colors shadow-sm">
+              <WhatsappIcon />
+            </div>
+            <span className="text-sm font-medium">WhatsApp</span>
+          </a>
+          
+          {/* Email */}
+          <a href="https://mail.google.com/mail/?view=cm&fs=1&to=soumyakant.tripathy422@gmail.com" target="_blank" rel="noopener noreferrer" aria-label="Email" className="group flex flex-col items-center gap-3 text-slate-500 dark:text-slate-400 hover:text-red-500 dark:hover:text-red-400 transition-all w-full">
+            <div className="p-4 rounded-full bg-slate-100 dark:bg-slate-800/50 group-hover:bg-red-100 dark:group-hover:bg-red-900/40 transition-colors shadow-sm">
+              <Mail size={24} />
+            </div>
+            <span className="text-sm font-medium">Email</span>
+          </a>
 
-        {/* GitHub */}
-        <a href="https://github.com/soumyakant1211" target="_blank" rel="noopener noreferrer" aria-label="GitHub" className="group flex flex-col items-center gap-3 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all w-full col-span-2 md:col-span-1">
-          <div className="p-4 rounded-full bg-slate-100 dark:bg-slate-800/50 group-hover:bg-slate-200 dark:group-hover:bg-slate-700 transition-colors shadow-sm">
-            <GithubIcon />
-          </div>
-          <span className="text-sm font-medium">GitHub</span>
-        </a>
-      </div>
-    </section>
+          {/* LinkedIn */}
+          <a href="https://www.linkedin.com/in/soumyakant-tripathy/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="group flex flex-col items-center gap-3 text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-all w-full">
+            <div className="p-4 rounded-full bg-slate-100 dark:bg-slate-800/50 group-hover:bg-blue-100 dark:group-hover:bg-blue-900/40 transition-colors shadow-sm">
+              <LinkedinIcon />
+            </div>
+            <span className="text-sm font-medium">LinkedIn</span>
+          </a>
+
+          {/* GitHub */}
+          <a href="https://github.com/soumyakant1211" target="_blank" rel="noopener noreferrer" aria-label="GitHub" className="group flex flex-col items-center gap-3 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all w-full col-span-2 md:col-span-1">
+            <div className="p-4 rounded-full bg-slate-100 dark:bg-slate-800/50 group-hover:bg-slate-200 dark:group-hover:bg-slate-700 transition-colors shadow-sm">
+              <GithubIcon />
+            </div>
+            <span className="text-sm font-medium">GitHub</span>
+          </a>
+        </div>
+      </section>
+
+      {/* Global Footer */}
+      <footer className="w-full py-8 border-t border-slate-200 dark:border-slate-800 mt-10">
+         <div className="container mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
+            <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">
+               Designed & Built by <span className="text-violet-500 font-bold">Soumyakant Tripathy</span>
+            </p>
+            
+            <div className="flex items-center gap-6 text-sm text-slate-400 dark:text-slate-500 font-mono">
+               <span className="flex items-center gap-1.5"><Code2 size={14} className="text-slate-300 dark:text-slate-600"/> React & Tailwind v4</span>
+               <span>Last Updated: 2026</span>
+            </div>
+         </div>
+      </footer>
+    </>
   );
 };
+
+// Simple Code2 icon for the footer to avoid an extra import at the top level
+const Code2 = ({ size, className }) => (
+  <svg viewBox="0 0 24 24" width={size} height={size} className={className} stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="16 18 22 12 16 6"></polyline>
+    <polyline points="8 6 2 12 8 18"></polyline>
+  </svg>
+);
 
 export default Contact;

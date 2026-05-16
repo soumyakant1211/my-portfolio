@@ -6,15 +6,15 @@ const recognitions = [
     title: "Monthly I Appreciate",
     date: "Nov 2024",
     icon: <Award className="text-yellow-500" size={24} />,
-    description: "Awarded for rapid adaptation to Robot Framework and delivery of an end-to-end automated document generation solution.",
+    description: "Awarded for rapid framework adaptation and delivering an end-to-end automated document generation solution that significantly improved operational efficiency.",
     image: "/award_photo_1.webp"
   },
   {
     id: 2,
-    title: "Excellence in Delivery – Execution",
+    title: "Excellence in Delivery",
     date: "May 2024",
     icon: <Trophy className="text-emerald-500" size={24} />,
-    description: "A prestigious team award recognizing outstanding execution, delivery metrics, and collaborative excellence.",
+    description: "Recognized for outstanding execution metrics, collaborative excellence, and delivering highly stable automation pipelines to direct clients.",
     image: "/award_photo_2.webp"
   },
   {
@@ -22,14 +22,14 @@ const recognitions = [
     title: "Rising Star",
     date: "Feb 2023",
     icon: <Star className="text-violet-500" size={24} />,
-    description: "Recognized for high automation impact, rapid upskilling in Rust & JS, and significant test coverage improvements.",
+    description: "Awarded for high automation impact, accelerating test execution times, and significant coverage improvements across legacy systems.",
     image: "/award_photo_3.jpeg"
   }
 ];
 
 const Recognitions = () => {
   return (
-    <section id="recognitions" className="py-20 scroll-mt-20">
+    <section id="recognitions" className="py-10 md:py-12 scroll-mt-20">
       <h2 className="text-3xl font-bold mb-12 flex items-center gap-3 text-slate-800 dark:text-slate-100">
         <span className="text-violet-500 font-mono">03.</span> Recognitions
       </h2>
@@ -38,10 +38,10 @@ const Recognitions = () => {
         {recognitions.map((award) => (
           <div 
             key={award.id} 
-            className="flex flex-col rounded-3xl glass overflow-hidden transition-all hover:-translate-y-2 hover:shadow-2xl hover:shadow-violet-500/10 group border border-transparent hover:border-violet-500/30"
+            className="flex flex-col rounded-3xl glass overflow-hidden transition-all duration-300 hover:-translate-y-3 hover:shadow-2xl hover:shadow-violet-500/25 group border border-transparent hover:border-violet-500/40"
           >
             {/* Photo Section */}
-            <div className="relative h-48 sm:h-56 w-full bg-slate-200 dark:bg-slate-800/50 flex flex-col items-center justify-center border-b border-white/10 dark:border-slate-800 overflow-hidden">
+            <div className="relative h-56 w-full bg-slate-200 dark:bg-slate-800/50 flex flex-col items-center justify-center border-b border-white/10 dark:border-slate-800 overflow-hidden shrink-0">
               {award.image ? (
                 <img 
                   src={award.image} 
