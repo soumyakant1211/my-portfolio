@@ -7,7 +7,7 @@ const Hero = () => {
       <div className="absolute top-[10%] right-[15%] w-[400px] h-[400px] lg:w-[600px] lg:h-[600px] bg-violet-600/20 rounded-full blur-[120px] -z-10 pointer-events-none" />
       <div className="absolute bottom-[0%] left-[5%] w-[300px] h-[300px] lg:w-[500px] lg:h-[500px] bg-fuchsia-600/20 rounded-full blur-[100px] -z-10 pointer-events-none" />
       
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10 transition-all duration-700 animate-in fade-in slide-in-from-bottom-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10 duration-700 animate-in fade-in slide-in-from-bottom-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center border-0 border-white">
           
           {/* Left Text Content */}
