@@ -1,7 +1,5 @@
 # Soumyakant Tripathy - Senior SDET Portfolio
 
-![Portfolio Preview](./public/favicon.svg)
-
 > A modern, high-performance engineering portfolio designed specifically for a Senior Software Development Engineer in Test (SDET) and QA Automation Engineer.
 
 This portfolio is built with modern web technologies, emphasizing speed, technical credibility, and an immaculate user experience. It breaks away from generic "frontend developer" templates by highlighting hard engineering metrics, CI/CD integrations, and a custom Terminal-style UI for automation test reporting.
@@ -28,7 +26,6 @@ This project was bootstrapped using [Vite](https://vitejs.dev/), ensuring lightn
 * **Styling:** Tailwind CSS v4 (Using modern `@import` and theme definitions)
 * **Icons:** `lucide-react`
 * **Typography:** Google Fonts (`Outfit`)
-* **Deployment:** Vercel / Netlify Ready
 
 ---
 
@@ -61,16 +58,6 @@ Make sure you have [Node.js](https://nodejs.org/) installed on your machine.
    npm run dev
    ```
    Open `http://localhost:5001` (or the port provided in your terminal) to view it in the browser.
-
----
-
-## 📦 Production Build
-
-To build the app for production, run:
-```bash
-npm run build
-```
-This will compile and optimize the application into the `/dist` folder, which can be dragged-and-dropped directly into any static hosting service like Vercel, Netlify, or GitHub Pages.
 
 ---
 
