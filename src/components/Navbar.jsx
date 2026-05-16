@@ -108,7 +108,7 @@ const Navbar = ({ darkMode, toggleTheme }) => {
               <LinkedinIcon />
             </a>
             <a 
-              href="/Soumyakant_Tripathy_SDET_Python_Resume.pdf" 
+              href="/Soumyakant_Tripathy_SDET_Resume.pdf" 
               target="_blank" 
               rel="noopener noreferrer"
               className="hidden lg:flex items-center gap-2 px-5 py-2 rounded-full bg-violet-600 text-white font-bold hover:bg-violet-700 transition-all text-sm shadow-md shadow-violet-500/20 hover:shadow-violet-500/40 hover:-translate-y-0.5"
@@ -155,7 +155,7 @@ const Navbar = ({ darkMode, toggleTheme }) => {
           
           <div className="pt-4 border-t border-slate-200 dark:border-slate-800">
             <a 
-              href="/Soumyakant_Tripathy_SDET_Python_Resume.pdf" 
+              href="/Soumyakant_Tripathy_SDET_Resume.pdf" 
               target="_blank" 
               rel="noopener noreferrer"
               onClick={() => setIsOpen(false)}

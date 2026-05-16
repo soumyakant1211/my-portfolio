@@ -17,7 +17,7 @@ const Hero = () => {
                 Hey, I am
               </p>
               
-              <h1 className="text-6xl sm:text-7xl md:text-[4.5rem] lg:text-[5.5rem] font-black tracking-tighter text-slate-900 dark:text-white leading-[0.95]">
+              <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-black tracking-tighter text-slate-900 dark:text-white leading-[0.95]">
                 Soumyakant
                 <span className="block text-transparent bg-clip-text bg-gradient-to-r from-violet-500 via-fuchsia-500 to-indigo-500 pb-2">
                   Tripathy
@@ -42,7 +42,7 @@ const Hero = () => {
                   I automate the boring stuff, catch production-crashing bugs early, and keep continuous integration pipelines green. 
                 </p>
                 <p className="text-lg text-slate-700 dark:text-slate-200 max-w-xl leading-relaxed font-bold border-l-4 border-violet-500 pl-4 bg-violet-500/5 dark:bg-violet-900/10 py-2">
-                  Built scalable automation frameworks reducing regression effort by 40% and improving release confidence across enterprise workflows.
+                  Built scalable automation frameworks reducing regression effort by 40% and improving release confidence across enterprise applications.
                 </p>
               </div>
               
@@ -74,7 +74,7 @@ const Hero = () => {
               </a>
               
               <a 
-                href="/Soumyakant_Tripathy_SDET_Python_Resume.pdf" 
+                href="/Soumyakant_Tripathy_SDET_Resume.pdf" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 px-8 py-3.5 rounded-full border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 font-bold hover:border-violet-500 hover:text-violet-600 dark:hover:border-violet-400 dark:hover:text-violet-400 dark:bg-slate-900/40 hover:bg-violet-50 dark:hover:bg-violet-900/20 transition-all shadow-sm group backdrop-blur-sm"
