@@ -2,25 +2,40 @@
 <html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- 1. Theme script FIRST — prevents any flash of wrong theme before CSS loads -->
     <script>
       try {
-        if (localStorage.getItem('theme') === 'light') {
-          document.documentElement.classList.remove('dark');
-        } else {
-          document.documentElement.classList.add('dark');
-        }
+        var t = localStorage.getItem('theme');
+        if (t === 'light') document.documentElement.classList.remove('dark');
+        else document.documentElement.classList.add('dark');
       } catch (_) {}
     </script>
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
     <title>Soumyakant Tripathy | SDET Engineer</title>
-    <meta name="description" content="Senior SDET & QA Automation Engineer specializing in Python, Selenium, Playwright, and CI/CD pipelines. Exploring modern AI-driven testing." />
-    
+    <meta name="description" content="Senior SDET &amp; QA Automation Engineer specializing in Python, Selenium, Playwright, and CI/CD pipelines. Exploring modern AI-driven testing." />
+
     <!-- Open Graph / LinkedIn Preview -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Soumyakant Tripathy | SDET Engineer" />
-    <meta property="og:description" content="Senior SDET & QA Automation Engineer specializing in Python, Selenium, Playwright, and CI/CD pipelines." />
+    <meta property="og:description" content="Senior SDET &amp; QA Automation Engineer specializing in Python, Selenium, Playwright, and CI/CD pipelines." />
     <meta property="og:image" content="/portfolio_preview.png" />
+
+    <!-- 2. Non-render-blocking font loading via preconnect + preload -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap" media="print" onload="this.media='all'" />
+    <noscript>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap" />
+    </noscript>
+
+    <!-- 3. DNS prefetch for GitHub/LinkedIn links -->
+    <link rel="dns-prefetch" href="https://github.com" />
+    <link rel="dns-prefetch" href="https://www.linkedin.com" />
   </head>
   <body>
     <div id="root"></div>

@@ -1,5 +1,5 @@
 import { Moon, Sun, Menu, X, Download } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 
 const GithubIcon = () => (
   <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
@@ -28,37 +28,35 @@ const Navbar = ({ darkMode, toggleTheme }) => {
     window.history.replaceState(null, null, window.location.pathname);
   }, []);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const sections = links.map(link => document.getElementById(link.toLowerCase()));
-      
-      let currentSection = 'about';
-      for (const section of sections) {
-        if (!section) continue;
-        const rect = section.getBoundingClientRect();
-        // Using 150px as an offset for the scroll spy (approx header height + padding)
-        if (rect.top <= 150) {
-          currentSection = section.id;
-        }
-      }
-      
-      if (currentSection !== activeSection) {
-        setActiveSection(currentSection);
-        // Silently push to the URL hash history without triggering a jarring jump
-        if (currentSection === 'about') {
-           window.history.replaceState(null, null, window.location.pathname);
-        } else if (window.location.hash !== `#${currentSection}`) {
-           window.history.replaceState(null, null, `#${currentSection}`);
-        }
-      }
-    };
+  // Use a ref so the scroll handler never needs to be re-registered when activeSection changes
+  const activeSectionRef = useRef(activeSection);
 
+  const handleScroll = useCallback(() => {
+    const sections = links.map(link => document.getElementById(link.toLowerCase()));
+
+    let currentSection = 'about';
+    for (const section of sections) {
+      if (!section) continue;
+      const rect = section.getBoundingClientRect();
+      if (rect.top <= 150) currentSection = section.id;
+    }
+
+    if (currentSection !== activeSectionRef.current) {
+      activeSectionRef.current = currentSection;
+      setActiveSection(currentSection);
+      if (currentSection === 'about') {
+        window.history.replaceState(null, null, window.location.pathname);
+      } else if (window.location.hash !== `#${currentSection}`) {
+        window.history.replaceState(null, null, `#${currentSection}`);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
     window.addEventListener('scroll', handleScroll, { passive: true });
-    // Trigger immediately on mount to establish correct hash
-    handleScroll();
-    
+    handleScroll(); // Establish correct section on mount
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [activeSection]);
+  }, [handleScroll]);
 
   return (
     <nav className="fixed top-0 left-0 w-full z-50 glass">
