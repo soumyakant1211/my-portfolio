@@ -85,8 +85,8 @@ const Hero = () => {
           </div>
 
           {/* Right Visual Content (Engineering Terminal Mockup) */}
-          <div className="relative hidden lg:flex justify-center items-center w-full mt-10 lg:mt-0">
-             <div className="w-full max-w-[500px] rounded-2xl overflow-hidden bg-[#0d1117] border border-slate-700/50 shadow-2xl hover:shadow-violet-500/20 transition-all duration-500 hover:-translate-y-2 group">
+          <div className="relative flex justify-center items-center w-full mt-10 lg:mt-0">
+             <div className="w-full max-w-[360px] sm:max-w-[440px] lg:max-w-[500px] rounded-2xl overflow-hidden bg-[#0d1117] border border-slate-700/50 shadow-2xl hover:shadow-violet-500/20 transition-all duration-500 hover:-translate-y-2 group">
                 
                 {/* MacOS Terminal Header */}
                 <div className="bg-[#161b22] px-4 py-3 flex items-center gap-2 border-b border-slate-800">
