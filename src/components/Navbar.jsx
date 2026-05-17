@@ -54,8 +54,12 @@ const Navbar = ({ darkMode, toggleTheme }) => {
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll(); // Establish correct section on mount
-    return () => window.removeEventListener('scroll', handleScroll);
+    // Defer initial check to avoid synchronous setState inside effect (react-hooks/set-state-in-effect)
+    const timerId = setTimeout(handleScroll, 0);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      clearTimeout(timerId);
+    };
   }, [handleScroll]);
 
   return (
