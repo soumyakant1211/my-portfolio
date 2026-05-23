@@ -7,6 +7,7 @@ const Experience   = lazy(() => import('./components/Experience'));
 const Skills       = lazy(() => import('./components/Skills'));
 const Recognitions = lazy(() => import('./components/Recognitions'));
 const Contact      = lazy(() => import('./components/Contact'));
+const Chatbot      = lazy(() => import('./components/Chatbot'));
 
 // Minimal skeleton shown while a lazy section is loading
 const SectionSkeleton = () => (
@@ -72,6 +73,11 @@ function App() {
       <footer className="mt-20 py-8 text-center text-slate-500 dark:text-slate-400 border-t border-slate-200 dark:border-slate-800">
         <p>© {new Date().getFullYear()} My Portfolio. Built with React &amp; Tailwind CSS.</p>
       </footer>
+
+      {/* Global Chatbot */}
+      <Suspense fallback={null}>
+        <Chatbot />
+      </Suspense>
     </div>
   );
 }

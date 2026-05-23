@@ -8,6 +8,12 @@ export default defineConfig({
     tailwindcss(),
     react(),
   ],
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: './src/setupTests.js',
+    exclude: ['**/node_modules/**', '**/tests/**'],
+  },
   build: {
     // Raise the warning limit slightly (portfolio is intentionally feature-rich)
     chunkSizeWarningLimit: 500,
