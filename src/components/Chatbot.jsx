@@ -37,6 +37,7 @@ const Chatbot = () => {
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef(null);
+  const nextIdRef = useRef(2);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -149,7 +150,7 @@ He specializes in modern scalable architecture and AI-assisted testing.`;
     if (!text.trim()) return;
 
     const userMessage = {
-      id: Date.now(),
+      id: nextIdRef.current++,
       sender: 'user',
       text: text.trim()
     };
@@ -161,7 +162,7 @@ He specializes in modern scalable architecture and AI-assisted testing.`;
     setTimeout(() => {
       const responseText = getBotResponse(userMessage.text);
       const botResponse = {
-        id: Date.now() + 1,
+        id: nextIdRef.current++,
         sender: 'bot',
         text: responseText
       };
