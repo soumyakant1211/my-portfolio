@@ -1,63 +1,96 @@
 # Soumyakant Tripathy - Senior SDET Portfolio
 
-> A modern, high-performance engineering portfolio designed specifically for a Senior Software Development Engineer in Test (SDET) and QA Automation Engineer.
+> A modern, high-performance engineering portfolio for a Senior Software Development Engineer in Test (SDET) and QA Automation Engineer.
 
-This portfolio is built with modern web technologies, emphasizing speed, technical credibility, and an immaculate user experience. It breaks away from generic "frontend developer" templates by highlighting hard engineering metrics, CI/CD integrations, and a custom Terminal-style UI for automation test reporting.
+Built with React 19, Vite and Tailwind CSS v4, the site focuses on speed, technical credibility and a clean experience for recruiters. Instead of a generic "frontend developer" template, it highlights hard engineering metrics, CI/CD work and a terminal-style test report in the hero. The site itself is tested like a product, with unit tests, Playwright end-to-end tests and a CI pipeline.
 
 ---
 
 ## 🚀 Key Features
 
-* **Custom Automation Terminal UI:** A hand-coded, animated MacOS-style terminal simulating a live Playwright/Pytest test suite execution, demonstrating immediate engineering credibility.
-* **Metric-Driven Experience Section:** Work history and achievements are heavily quantified, focusing on percentage-based business impact, test coverage improvements, and manual effort reduction.
-* **Scroll-Spy Navigation:** The active section highlights natively in the navigation bar as the user scrolls, seamlessly syncing with the URL hash structure.
-* **Intelligent Asset Optimization:** High-resolution recognition photos are optimized into lightweight `.webp` formats using a custom Python script, guaranteeing sub-second load times.
-* **Dark Mode Native:** A premium "glassmorphic" design language built specifically for dark-mode-first readability.
-* **ATS & Recruiter Optimized:** Built with clear scanning hierarchies, interactive tech-stack chips, and explicitly mapped GitHub/Open-Source sections.
+* **Automation Terminal UI:** A macOS-style terminal in the hero that simulates a passing Playwright/PyTest suite run.
+* **Metric-Driven Experience Section:** Work history quantified by business impact: coverage gains, faster regressions and reduced manual effort, with the tech stack used on each role.
+* **AI Portfolio Assistant:** A floating chat widget that answers recruiter questions (experience, frameworks, CI/CD, skills, contact details), opens the resume, GitHub or LinkedIn, and can scroll to any section. Replies are rule-based and run entirely in the browser.
+* **Scroll-Spy Navigation:** The active section is highlighted in the navbar and synced to the URL hash as you scroll.
+* **Dark Mode First:** A glassmorphic design that defaults to dark, with a light theme that is remembered between visits and never flashes on load.
+* **Fast by Default:** Below-the-fold sections and the chatbot are lazy-loaded, vendor code is split into cacheable chunks, and photos are served as resized WebP files.
+* **Accessible:** Skip link, labelled controls, keyboard support (Escape closes menus and chat), visible focus styles and reduced-motion support.
+* **SEO Ready:** Descriptive meta tags, Open Graph/Twitter tags and `Person` structured data.
 
 ---
 
 ## 🛠️ Tech Stack
 
-This project was bootstrapped using [Vite](https://vitejs.dev/), ensuring lightning-fast Hot Module Replacement (HMR) and highly optimized production builds.
-
-* **Framework:** React 18 (Functional Components & Hooks)
-* **Build Tool:** Vite v8
-* **Styling:** Tailwind CSS v4 (Using modern `@import` and theme definitions)
-* **Icons:** `lucide-react`
-* **Typography:** Google Fonts (`Outfit`)
+| Area | Tools |
+| --- | --- |
+| Framework | React 19 (functional components and hooks) |
+| Build tool | Vite 8 |
+| Styling | Tailwind CSS v4 |
+| Icons | `lucide-react` plus inline brand SVGs |
+| Typography | Google Fonts (`Outfit`) |
+| Unit tests | Vitest and React Testing Library |
+| E2E tests | Playwright (desktop and mobile viewports) |
+| CI | GitHub Actions |
 
 ---
 
-## 💻 Local Development Workflow
+## 📁 Project Structure
 
-To get a local copy up and running, follow these simple steps:
+```
+src/
+├── components/      # Page sections (Hero, Experience, Skills, ...) and shared UI
+├── data/profile.js  # Contact details and links — edit these in one place
+├── lib/chatbot.js   # Chatbot intents and replies (pure, unit-tested)
+└── __tests__/       # Vitest unit tests
+tests/               # Playwright end-to-end tests
+public/              # Resume PDF, award photos, favicon
+scripts/             # Image optimization helper
+```
+
+---
+
+## 💻 Local Development
 
 ### Prerequisites
-Make sure you have [Node.js](https://nodejs.org/) installed on your machine.
+[Node.js](https://nodejs.org/) 20.19+ or 22.12+ (required by Vite 8).
 
-### Installation
+### Setup
 
-1. **Clone the repo:**
-   ```bash
-   git clone https://github.com/soumyakant1211/portfolio-2026.git
-   ```
+```bash
+git clone https://github.com/soumyakant1211/my-portfolio.git
+cd my-portfolio
+npm install
+npm run dev
+```
 
-2. **Navigate to the directory:**
-   ```bash
-   cd portfolio-2026
-   ```
+Then open `http://localhost:5173`.
 
-3. **Install dependencies:**
-   ```bash
-   npm install
-   ```
+### Scripts
 
-4. **Start the development server:**
-   ```bash
-   npm run dev
-   ```
-   Open `http://localhost:5001` (or the port provided in your terminal) to view it in the browser.
+| Command | What it does |
+| --- | --- |
+| `npm run dev` | Start the dev server with hot reload |
+| `npm run build` | Create a production build in `dist/` |
+| `npm run preview` | Serve the production build locally |
+| `npm run lint` | Run ESLint |
+| `npm test` | Run unit tests in watch mode |
+| `npm run test:run` | Run unit tests once |
+| `npm run test:e2e` | Run Playwright end-to-end tests (starts the dev server automatically) |
+
+The first time you run E2E tests, install the browser with `npx playwright install chromium`.
+
+### Adding photos
+
+Drop a `.jpg`/`.png` into `public/` and run `python scripts/optimize_images.py public/<file>` (needs `pip install Pillow`). It writes a resized `.webp` next to the original. Reference the `.webp` and delete the original.
+
+---
+
+## ✅ Continuous Integration
+
+Every push and pull request to `main` runs [`.github/workflows/ci.yml`](.github/workflows/ci.yml):
+
+1. **Lint, Unit Tests & Build:** ESLint, Vitest and a production build.
+2. **E2E Tests:** Playwright on Chromium. The HTML report is uploaded as a build artifact.
 
 ---
 

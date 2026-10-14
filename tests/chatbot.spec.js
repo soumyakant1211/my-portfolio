@@ -42,6 +42,27 @@ test.describe('Chatbot E2E Tests', () => {
     await expect(page.getByText(/reducing regression execution time by 40%/i)).toBeVisible({ timeout: 5000 });
   });
 
+  test('should answer framework and CI/CD prompts with their own topic', async ({ page }) => {
+    await page.locator('button[aria-label="Toggle Chatbot"]').click();
+
+    await page.getByRole('button', { name: /What automation frameworks has he built\?/i }).click();
+    await expect(page.getByText(/Robot Framework implementations/i)).toBeVisible({ timeout: 5000 });
+
+    const input = page.getByPlaceholder(/Ask about my automation experience/i);
+    await input.fill('Explain his CI/CD experience');
+    await input.press('Enter');
+    await expect(page.getByText(/strong CI\/CD experience/i)).toBeVisible({ timeout: 5000 });
+  });
+
+  test('should share contact details', async ({ page }) => {
+    await page.locator('button[aria-label="Toggle Chatbot"]').click();
+
+    const input = page.getByPlaceholder(/Ask about my automation experience/i);
+    await input.fill('Contact details');
+    await input.press('Enter');
+    await expect(page.getByRole('log').getByText(/soumyakant\.tripathy422@gmail\.com/i)).toBeVisible({ timeout: 5000 });
+  });
+
   test('should execute navigation commands', async ({ page }) => {
     const chatToggle = page.locator('button[aria-label="Toggle Chatbot"]');
     await chatToggle.click();

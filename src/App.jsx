@@ -1,6 +1,7 @@
 import { useState, useEffect, lazy, Suspense } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
+import Footer from './components/Footer';
 
 // Lazy-load all below-the-fold sections — they won't block the initial paint
 const Experience   = lazy(() => import('./components/Experience'));
@@ -11,7 +12,7 @@ const Chatbot      = lazy(() => import('./components/Chatbot'));
 
 // Minimal skeleton shown while a lazy section is loading
 const SectionSkeleton = () => (
-  <div className="py-12 animate-pulse">
+  <div className="py-12 animate-pulse" aria-hidden="true">
     <div className="h-8 w-48 rounded-xl bg-slate-200 dark:bg-slate-800 mb-10" />
     <div className="space-y-4">
       <div className="h-4 rounded-lg bg-slate-200 dark:bg-slate-800 w-full" />
@@ -21,37 +22,53 @@ const SectionSkeleton = () => (
   </div>
 );
 
+// localStorage can throw (e.g. Safari private mode, blocked storage) — never let that break the page
+const readStoredTheme = () => {
+  try {
+    return localStorage.getItem('theme');
+  } catch {
+    return null;
+  }
+};
+
+const storeTheme = (theme) => {
+  try {
+    localStorage.setItem('theme', theme);
+  } catch {
+    // Theme still applies for this visit; it just won't be remembered
+  }
+};
+
 function App() {
-  const [darkMode, setDarkMode] = useState(() => {
-    if (typeof window !== 'undefined' && localStorage.getItem('theme')) {
-      return localStorage.getItem('theme') === 'dark';
-    }
-    return true; // Default to dark
-  });
+  // Default to dark; must match the inline script in index.html
+  const [darkMode, setDarkMode] = useState(() => readStoredTheme() !== 'light');
 
   // Apply theme class and mark as ready (enables transitions after first paint)
   useEffect(() => {
     const root = document.documentElement;
-    if (darkMode) {
-      root.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      root.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    }
+    root.classList.toggle('dark', darkMode);
+    storeTheme(darkMode ? 'dark' : 'light');
     // Enable transitions only after theme is applied — prevents flash
-    requestAnimationFrame(() => {
+    const frameId = requestAnimationFrame(() => {
       root.classList.add('theme-ready');
     });
+    return () => cancelAnimationFrame(frameId);
   }, [darkMode]);
 
   const toggleTheme = () => setDarkMode(prev => !prev);
 
   return (
     <div className="min-h-screen transition-colors duration-150">
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[60] focus:px-4 focus:py-2 focus:rounded-lg focus:bg-violet-600 focus:text-white focus:font-bold"
+      >
+        Skip to content
+      </a>
+
       <Navbar darkMode={darkMode} toggleTheme={toggleTheme} />
 
-      <main className="container mx-auto px-4 md:px-8 space-y-24 py-20">
+      <main id="main" className="container mx-auto px-4 md:px-8 space-y-24 py-20">
         {/* Hero is critical path — always eager */}
         <Hero />
 
@@ -70,9 +87,7 @@ function App() {
         </Suspense>
       </main>
 
-      <footer className="mt-20 py-8 text-center text-slate-500 dark:text-slate-400 border-t border-slate-200 dark:border-slate-800">
-        <p>© {new Date().getFullYear()} My Portfolio. Built with React &amp; Tailwind CSS.</p>
-      </footer>
+      <Footer />
 
       {/* Global Chatbot */}
       <Suspense fallback={null}>

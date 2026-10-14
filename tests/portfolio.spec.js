@@ -22,29 +22,85 @@ test.describe('Portfolio E2E Tests', () => {
     await expect(experienceSection).toBeVisible();
   });
 
-  test('should toggle dark/light mode', async ({ page }) => {
-    // Portfolio might default to dark or light. 
-    // We can check if the html element has 'dark' class.
-    const html = page.locator('html');
-    const isInitiallyDark = await html.evaluate(node => node.classList.contains('dark'));
+  test('scroll-spy highlights the section in view', async ({ page }) => {
+    await page.locator('#skills').scrollIntoViewIfNeeded();
+    await page.evaluate(() => window.scrollTo(0, document.getElementById('skills').offsetTop - 64));
+    await expect(page.locator('nav a[href="#skills"]').first()).toHaveAttribute('aria-current', 'true');
+  });
 
-    // Click the toggle theme button
-    const toggleButton = page.getByRole('button', { name: /toggle theme/i }).first();
-    if (await toggleButton.isVisible()) {
-      await toggleButton.click();
-      
-      // Wait for class change
-      if (isInitiallyDark) {
-        await expect(html).not.toHaveClass(/dark/);
-      } else {
-        await expect(html).toHaveClass(/dark/);
-      }
+  test('should toggle dark/light mode and remember the choice', async ({ page }) => {
+    const html = page.locator('html');
+    // Dark is the default theme
+    await expect(html).toHaveClass(/dark/);
+
+    await page.getByRole('button', { name: /toggle theme/i }).first().click();
+    await expect(html).not.toHaveClass(/dark/);
+
+    await page.reload();
+    await expect(html).not.toHaveClass(/dark/);
+
+    await page.getByRole('button', { name: /toggle theme/i }).first().click();
+    await expect(html).toHaveClass(/dark/);
+  });
+
+  test('resume download link is present and correct', async ({ page }) => {
+    const resumeLink = page.getByRole('link', { name: /Resume/i }).first();
+    await expect(resumeLink).toBeVisible();
+    await expect(resumeLink).toHaveAttribute('href', /Soumyakant_Tripathy_SDET_Resume.pdf/);
+  });
+
+  test('resume PDF and award photos are served', async ({ page, request }) => {
+    const resume = await request.get('/Soumyakant_Tripathy_SDET_Resume.pdf');
+    expect(resume.ok()).toBeTruthy();
+    expect(resume.headers()['content-type']).toContain('pdf');
+
+    const images = page.locator('#recognitions img');
+    await images.first().scrollIntoViewIfNeeded();
+    await expect(images).toHaveCount(3);
+    for (const src of await images.evaluateAll((imgs) => imgs.map((img) => img.getAttribute('src')))) {
+      expect((await request.get(src)).ok(), src).toBeTruthy();
     }
   });
-  
-  test('resume download link is present and correct', async ({ page }) => {
-     const resumeLink = page.getByRole('link', { name: /Resume/i }).first();
-     await expect(resumeLink).toBeVisible();
-     await expect(resumeLink).toHaveAttribute('href', /Soumyakant_Tripathy_SDET_Resume.pdf/);
+
+  test('renders exactly one footer', async ({ page }) => {
+    await page.locator('#contact').scrollIntoViewIfNeeded();
+    await expect(page.locator('footer')).toHaveCount(1);
+  });
+
+  test('skip link is the first thing keyboard users reach', async ({ page }) => {
+    await page.keyboard.press('Tab');
+    const skipLink = page.getByRole('link', { name: 'Skip to content' });
+    await expect(skipLink).toBeFocused();
+    await expect(skipLink).toBeVisible();
+  });
+});
+
+test.describe('Mobile layout', () => {
+  test.use({ viewport: { width: 360, height: 740 }, hasTouch: true });
+
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/');
+  });
+
+  test('page does not scroll horizontally', async ({ page }) => {
+    await page.locator('#contact').scrollIntoViewIfNeeded();
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+    expect(overflow).toBeLessThanOrEqual(0);
+  });
+
+  test('mobile menu opens, navigates and closes', async ({ page }) => {
+    await page.getByRole('button', { name: 'Open menu' }).click();
+    await page.locator('#mobile-menu').getByRole('link', { name: 'Skills' }).click();
+
+    await expect(page).toHaveURL(/#skills/);
+    await expect(page.locator('#mobile-menu')).toHaveCount(0);
+  });
+
+  test('chatbot panel fits inside the viewport', async ({ page }) => {
+    await page.getByRole('button', { name: 'Toggle Chatbot' }).click();
+    const box = await page.locator('#chatbot-panel').boundingBox();
+    expect(box.x).toBeGreaterThanOrEqual(0);
+    expect(box.x + box.width).toBeLessThanOrEqual(360);
+    expect(box.y).toBeGreaterThanOrEqual(0);
   });
 });

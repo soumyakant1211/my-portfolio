@@ -2,6 +2,26 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Entrance animations used by sections and popovers */
+@theme {
+  --animate-fade-up: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-pop-in: pop-in 0.25s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-slide-down: slide-down 0.2s ease-out both;
+
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(1rem); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pop-in {
+    from { opacity: 0; transform: translateY(1rem) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  @keyframes slide-down {
+    from { opacity: 0; transform: translateY(-0.5rem); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+}
+
 /* Smooth scrolling */
 html {
   scroll-behavior: smooth;
@@ -14,9 +34,18 @@ html:not(.theme-ready) * {
 
 /* Base styles — font is loaded via <link> in index.html, fallback chain here */
 @layer base {
+  html {
+    color-scheme: light;
+  }
+  html.dark {
+    color-scheme: dark;
+  }
   body {
     font-family: 'Outfit', system-ui, -apple-system, sans-serif;
-    @apply bg-slate-50 text-slate-900;
+    @apply bg-slate-50 text-slate-900 antialiased;
+  }
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-violet-500;
   }
 }
 
@@ -24,12 +53,32 @@ html:not(.theme-ready) * {
   @apply bg-slate-950 text-slate-50;
 }
 
-/* Glassy component utility */
-@layer utilities {
+/* Glassy surface. Lives in the components layer so per-element utilities (borders,
+   hover shadows) always win. Solid enough to read on the light background. */
+@layer components {
   .glass {
-    @apply bg-white/10 backdrop-blur-md border border-white/20;
+    @apply bg-white/75 backdrop-blur-md shadow-sm shadow-slate-900/5;
   }
   .dark .glass {
-    @apply bg-slate-900/40 border-slate-800;
+    @apply bg-slate-900/40 shadow-none;
+  }
+}
+
+@utility custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(139 92 246 / 0.4) transparent;
+}
+
+/* Respect users who ask the OS for less motion */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

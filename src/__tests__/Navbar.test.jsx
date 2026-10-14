@@ -49,4 +49,26 @@ describe('Navbar Component', () => {
     
     expect(toggleThemeMock).toHaveBeenCalled();
   });
+
+  it('labels every theme toggle for screen readers', () => {
+    render(<Navbar darkMode={true} toggleTheme={() => {}} />);
+    // Desktop + mobile toggles
+    expect(screen.getAllByRole('button', { name: /toggle theme/i })).toHaveLength(2);
+  });
+
+  it('opens and closes the mobile menu', () => {
+    render(<Navbar darkMode={false} toggleTheme={() => {}} />);
+
+    const menuBtn = screen.getByRole('button', { name: 'Open menu' });
+    expect(menuBtn).toHaveAttribute('aria-expanded', 'false');
+
+    fireEvent.click(menuBtn);
+    expect(menuBtn).toHaveAttribute('aria-expanded', 'true');
+    expect(menuBtn).toHaveAccessibleName('Close menu');
+    expect(screen.getByRole('link', { name: /Download Resume/i })).toBeInTheDocument();
+
+    fireEvent.keyDown(window, { key: 'Escape' });
+    expect(menuBtn).toHaveAttribute('aria-expanded', 'false');
+    expect(screen.queryByRole('link', { name: /Download Resume/i })).not.toBeInTheDocument();
+  });
 });

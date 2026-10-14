@@ -1,17 +1,7 @@
 import { Moon, Sun, Menu, X, Download } from 'lucide-react';
 import { useState, useEffect, useRef, useCallback } from 'react';
-
-const GithubIcon = () => (
-  <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
-  </svg>
-);
-
-const LinkedinIcon = () => (
-  <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle>
-  </svg>
-);
+import { GithubIcon, LinkedinIcon } from './BrandIcons';
+import { PROFILE } from '../data/profile';
 
 const links = ['About', 'Experience', 'Skills', 'Recognitions', 'Contact'];
 
@@ -25,95 +15,119 @@ const Navbar = ({ darkMode, toggleTheme }) => {
       window.history.scrollRestoration = 'manual';
     }
     window.scrollTo(0, 0);
-    window.history.replaceState(null, null, window.location.pathname);
+    window.history.replaceState(null, '', window.location.pathname);
   }, []);
 
   // Use a ref so the scroll handler never needs to be re-registered when activeSection changes
   const activeSectionRef = useRef(activeSection);
 
-  const handleScroll = useCallback(() => {
-    const sections = links.map(link => document.getElementById(link.toLowerCase()));
-
+  const updateActiveSection = useCallback(() => {
     let currentSection = 'about';
-    for (const section of sections) {
-      if (!section) continue;
-      const rect = section.getBoundingClientRect();
-      if (rect.top <= 150) currentSection = section.id;
+    for (const link of links) {
+      const section = document.getElementById(link.toLowerCase());
+      if (section && section.getBoundingClientRect().top <= 150) currentSection = section.id;
     }
 
     if (currentSection !== activeSectionRef.current) {
       activeSectionRef.current = currentSection;
       setActiveSection(currentSection);
       if (currentSection === 'about') {
-        window.history.replaceState(null, null, window.location.pathname);
+        window.history.replaceState(null, '', window.location.pathname);
       } else if (window.location.hash !== `#${currentSection}`) {
-        window.history.replaceState(null, null, `#${currentSection}`);
+        window.history.replaceState(null, '', `#${currentSection}`);
       }
     }
   }, []);
 
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    // Measure at most once per frame instead of on every scroll event
+    let frameId = 0;
+    const onScroll = () => {
+      if (frameId) return;
+      frameId = requestAnimationFrame(() => {
+        frameId = 0;
+        updateActiveSection();
+      });
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
     // Defer initial check to avoid synchronous setState inside effect (react-hooks/set-state-in-effect)
-    const timerId = setTimeout(handleScroll, 0);
+    const timerId = setTimeout(updateActiveSection, 0);
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('scroll', onScroll);
+      cancelAnimationFrame(frameId);
       clearTimeout(timerId);
     };
-  }, [handleScroll]);
+  }, [updateActiveSection]);
+
+  // Close the mobile menu with Escape
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKeyDown = (e) => {
+      if (e.key === 'Escape') setIsOpen(false);
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [isOpen]);
+
+  const ThemeIcon = darkMode ? Sun : Moon;
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 glass">
+    <nav aria-label="Primary" className="fixed top-0 left-0 w-full z-50 glass border-b border-slate-200/70 dark:border-slate-800">
       <div className="container mx-auto px-4 md:px-8">
         <div className="flex justify-between items-center h-16">
-          <button 
+          <button
             onClick={() => {
               window.scrollTo({ top: 0, behavior: 'smooth' });
-              window.history.replaceState(null, null, window.location.pathname);
-            }} 
+              window.history.replaceState(null, '', window.location.pathname);
+            }}
             className="text-xl font-black tracking-tight text-slate-900 dark:text-white hover:opacity-80 transition-opacity"
           >
             Home
           </button>
 
           {/* Desktop Menu */}
-          <div className="hidden lg:flex items-center space-x-8 xl:space-x-12">
-            {links.map((link) => {
-              const isActive = activeSection === link.toLowerCase();
-              return (
-                <a 
-                  key={link} 
-                  href={`#${link.toLowerCase()}`}
-                  className={`text-base font-semibold transition-all ${
-                    isActive 
-                      ? 'text-violet-600 dark:text-violet-400 scale-105' 
-                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'
-                  }`}
-                >
-                  {link}
-                </a>
-              );
-            })}
-            
-            <button 
+          <div className="hidden lg:flex items-center">
+            <div className="flex items-center space-x-8 xl:space-x-12">
+              {links.map((link) => {
+                const isActive = activeSection === link.toLowerCase();
+                return (
+                  <a
+                    key={link}
+                    href={`#${link.toLowerCase()}`}
+                    aria-current={isActive ? 'true' : undefined}
+                    className={`text-base font-semibold transition-colors ${
+                      isActive
+                        ? 'text-violet-600 dark:text-violet-400'
+                        : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'
+                    }`}
+                  >
+                    {link}
+                  </a>
+                );
+              })}
+            </div>
+
+            <button
               onClick={toggleTheme}
-              className="p-2 ml-4 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-violet-50 dark:hover:bg-violet-900/30 transition-all border border-slate-200 dark:border-slate-700 shadow-sm"
+              className="p-2 ml-12 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-violet-50 dark:hover:bg-violet-900/30 transition-colors border border-slate-200 dark:border-slate-700 shadow-sm"
               aria-label="Toggle Theme"
+              title={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
             >
-              {darkMode ? <Sun size={18} /> : <Moon size={18} />}
+              <ThemeIcon size={18} />
             </button>
-            
-            <a href="https://github.com/soumyakant1211" target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile" className="text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors ml-4">
+
+            <a href={PROFILE.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile" className="text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors ml-6">
               <GithubIcon />
             </a>
-            <a href="https://www.linkedin.com/in/soumyakant-tripathy/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile" className="text-slate-500 hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400 transition-colors ml-4 mr-6">
+            <a href={PROFILE.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile" className="text-slate-500 hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400 transition-colors ml-4 mr-6">
               <LinkedinIcon />
             </a>
-            <a 
-              href="/Soumyakant_Tripathy_SDET_Resume.pdf" 
-              target="_blank" 
+            <a
+              href={PROFILE.resume}
+              target="_blank"
               rel="noopener noreferrer"
-              className="hidden lg:flex items-center gap-2 px-5 py-2 rounded-full bg-violet-600 text-white font-bold hover:bg-violet-700 transition-all text-sm shadow-md shadow-violet-500/20 hover:shadow-violet-500/40 hover:-translate-y-0.5"
+              className="flex items-center gap-2 px-5 py-2 rounded-full bg-violet-600 text-white font-bold hover:bg-violet-700 transition-all text-sm shadow-md shadow-violet-500/20 hover:shadow-violet-500/40 hover:-translate-y-0.5"
             >
               <Download size={14} /> Resume
             </a>
@@ -121,13 +135,20 @@ const Navbar = ({ darkMode, toggleTheme }) => {
 
           {/* Mobile Menu Button */}
           <div className="lg:hidden flex items-center gap-4">
-            <button 
+            <button
               onClick={toggleTheme}
+              aria-label="Toggle Theme"
               className="p-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 transition-colors"
             >
-              {darkMode ? <Sun size={18} /> : <Moon size={18} />}
+              <ThemeIcon size={18} />
             </button>
-            <button onClick={() => setIsOpen(!isOpen)} className="text-slate-900 dark:text-slate-50 border border-slate-200 dark:border-slate-800 p-1.5 rounded-lg">
+            <button
+              onClick={() => setIsOpen((open) => !open)}
+              aria-label={isOpen ? 'Close menu' : 'Open menu'}
+              aria-expanded={isOpen}
+              aria-controls="mobile-menu"
+              className="text-slate-900 dark:text-slate-50 border border-slate-200 dark:border-slate-800 p-1.5 rounded-lg"
+            >
               {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
@@ -136,17 +157,18 @@ const Navbar = ({ darkMode, toggleTheme }) => {
 
       {/* Mobile Menu Dropdown */}
       {isOpen && (
-        <div className="lg:hidden glass border-t border-slate-200 dark:border-slate-800 px-6 py-6 space-y-5 shadow-2xl animate-in slide-in-from-top-2">
+        <div id="mobile-menu" className="lg:hidden glass border-t border-slate-200 dark:border-slate-800 px-6 py-6 space-y-5 shadow-2xl animate-slide-down">
           {links.map((link) => {
             const isActive = activeSection === link.toLowerCase();
             return (
-              <a 
-                key={link} 
+              <a
+                key={link}
                 href={`#${link.toLowerCase()}`}
                 onClick={() => setIsOpen(false)}
+                aria-current={isActive ? 'true' : undefined}
                 className={`block text-base font-bold transition-colors ${
-                  isActive 
-                    ? 'text-violet-600 dark:text-violet-400 pointer-events-none' 
+                  isActive
+                    ? 'text-violet-600 dark:text-violet-400'
                     : 'text-slate-600 dark:text-slate-300'
                 }`}
               >
@@ -154,16 +176,22 @@ const Navbar = ({ darkMode, toggleTheme }) => {
               </a>
             );
           })}
-          
-          <div className="pt-4 border-t border-slate-200 dark:border-slate-800">
-            <a 
-              href="/Soumyakant_Tripathy_SDET_Resume.pdf" 
-              target="_blank" 
+
+          <div className="pt-4 border-t border-slate-200 dark:border-slate-800 flex items-center gap-3">
+            <a
+              href={PROFILE.resume}
+              target="_blank"
               rel="noopener noreferrer"
               onClick={() => setIsOpen(false)}
-              className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl bg-violet-600 text-white font-bold hover:bg-violet-700 transition-all shadow-md shadow-violet-500/20"
+              className="flex-1 flex items-center justify-center gap-2 py-3.5 rounded-xl bg-violet-600 text-white font-bold hover:bg-violet-700 transition-all shadow-md shadow-violet-500/20"
             >
               <Download size={18} /> Download Resume
+            </a>
+            <a href={PROFILE.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile" className="p-3.5 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300">
+              <GithubIcon />
+            </a>
+            <a href={PROFILE.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile" className="p-3.5 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300">
+              <LinkedinIcon />
             </a>
           </div>
         </div>

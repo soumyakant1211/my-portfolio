@@ -2,13 +2,13 @@ import { ArrowRight, Download, Terminal, CheckCircle2, Play } from 'lucide-react
 
 const Hero = () => {
   return (
-    <section id="about" className="relative pt-24 pb-10 min-h-[90vh] flex flex-col justify-center overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-700">
+    <section id="about" className="relative pt-24 pb-10 min-h-[90vh] flex flex-col justify-center overflow-hidden">
       {/* Background Glows */}
-      <div className="absolute top-[10%] right-[15%] w-[400px] h-[400px] lg:w-[600px] lg:h-[600px] bg-violet-600/20 rounded-full blur-[120px] -z-10 pointer-events-none" />
-      <div className="absolute bottom-[0%] left-[5%] w-[300px] h-[300px] lg:w-[500px] lg:h-[500px] bg-fuchsia-600/20 rounded-full blur-[100px] -z-10 pointer-events-none" />
+      <div aria-hidden="true" className="absolute top-[10%] right-[15%] w-[400px] h-[400px] lg:w-[600px] lg:h-[600px] bg-violet-600/20 rounded-full blur-[120px] -z-10 pointer-events-none" />
+      <div aria-hidden="true" className="absolute bottom-[0%] left-[5%] w-[300px] h-[300px] lg:w-[500px] lg:h-[500px] bg-fuchsia-600/20 rounded-full blur-[100px] -z-10 pointer-events-none" />
       
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10 duration-700 animate-in fade-in slide-in-from-bottom-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center border-0 border-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10 animate-fade-up">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center">
           
           {/* Left Text Content */}
           <div className="space-y-8">
@@ -85,7 +85,7 @@ const Hero = () => {
           </div>
 
           {/* Right Visual Content (Engineering Terminal Mockup) */}
-          <div className="relative flex justify-center items-center w-full mt-10 lg:mt-0">
+          <div className="relative flex justify-center items-center w-full mt-10 lg:mt-0" role="img" aria-label="Terminal showing a passing Playwright and PyTest end-to-end test run">
              <div className="w-full max-w-[360px] sm:max-w-[440px] lg:max-w-[500px] rounded-2xl overflow-hidden bg-[#0d1117] border border-slate-700/50 shadow-2xl hover:shadow-violet-500/20 transition-all duration-500 hover:-translate-y-2 group">
                 
                 {/* MacOS Terminal Header */}

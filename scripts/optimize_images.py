@@ -1,40 +1,59 @@
-import os
-from PIL import Image
+"""Convert JPEG/PNG images in public/ to resized WebP files for faster page loads.
 
-def optimize_image(input_path, output_path, max_width=800, quality=80):
-    if not os.path.exists(input_path):
-        print(f"File not found: {input_path}")
-        return
-    
-    try:
-        with Image.open(input_path) as img:
-            # Convert to RGB if necessary (e.g. for PNG with alpha channel moving to WEBP)
-            # WebP supports alpha, but if saving as JPEG we'd convert. We keep it as is if saving to WEBP.
-            
-            # Calculate new size while preserving aspect ratio
-            width, height = img.size
-            if width > max_width:
-                new_width = max_width
-                new_height = int((max_width / width) * height)
-                img = img.resize((new_width, new_height), Image.Resampling.LANCZOS)
-            
-            # Save compressed file
-            img.save(output_path, "WEBP", quality=quality, method=4)
-            print(f"Successfully optimized: {input_path} -> {output_path}")
-            
-    except Exception as e:
-        print(f"Error optimizing {input_path}: {e}")
+Usage:
+    python scripts/optimize_images.py                 # every .jpg/.jpeg/.png in public/
+    python scripts/optimize_images.py public/new.jpg  # specific files
+
+Each image is written next to the original with a .webp extension. Originals are
+left in place; delete them once the components reference the .webp version.
+Requires Pillow (pip install Pillow).
+"""
+import sys
+from pathlib import Path
+
+from PIL import Image, ImageOps
+
+PUBLIC_DIR = Path(__file__).resolve().parent.parent / "public"
+SOURCE_SUFFIXES = {".jpg", ".jpeg", ".png"}
+MAX_WIDTH = 800
+QUALITY = 80
+
+
+def optimize_image(input_path: Path, max_width: int = MAX_WIDTH, quality: int = QUALITY) -> Path:
+    output_path = input_path.with_suffix(".webp")
+    with Image.open(input_path) as img:
+        # Apply EXIF rotation so phone photos don't end up sideways
+        img = ImageOps.exif_transpose(img)
+        if img.width > max_width:
+            new_height = round(img.height * max_width / img.width)
+            img = img.resize((max_width, new_height), Image.Resampling.LANCZOS)
+        img.save(output_path, "WEBP", quality=quality, method=6)
+
+    before = input_path.stat().st_size / 1024
+    after = output_path.stat().st_size / 1024
+    print(f"{input_path.name} ({before:.0f} KB) -> {output_path.name} ({after:.0f} KB)")
+    return output_path
+
+
+def main(args: list[str]) -> int:
+    if args:
+        paths = [Path(a).resolve() for a in args]
+    else:
+        paths = sorted(p for p in PUBLIC_DIR.iterdir() if p.suffix.lower() in SOURCE_SUFFIXES)
+
+    if not paths:
+        print("No images to optimize.")
+        return 0
+
+    failed = False
+    for path in paths:
+        try:
+            optimize_image(path)
+        except (OSError, ValueError) as exc:
+            print(f"Failed to optimize {path}: {exc}", file=sys.stderr)
+            failed = True
+    return 1 if failed else 0
+
 
 if __name__ == "__main__":
-    public_dir = os.path.join(os.path.dirname(__file__), "..", "public")
-    
-    # Files to optimize
-    img1 = os.path.join(public_dir, "award_photo_1.JPG")
-    img2 = os.path.join(public_dir, "award_photo_2.png")
-    
-    # Optimized output paths
-    out1 = os.path.join(public_dir, "award_photo_1_optimized.webp")
-    out2 = os.path.join(public_dir, "award_photo_2.webp")  # I'll just name the second one .webp to match what I'll link
-    
-    optimize_image(img1, out1)
-    optimize_image(img2, out2)
+    sys.exit(main(sys.argv[1:]))
