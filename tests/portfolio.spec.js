@@ -28,19 +28,70 @@ test.describe('Portfolio E2E Tests', () => {
     await expect(page.locator('nav a[href="#skills"]').first()).toHaveAttribute('aria-current', 'true');
   });
 
-  test('should toggle dark/light mode and remember the choice', async ({ page }) => {
+  test('opens in Play Mode and remembers a switch to Recruiter Mode', async ({ page }) => {
     const html = page.locator('html');
-    // Dark is the default theme
+    await expect(html).toHaveClass(/mode-play/);
     await expect(html).toHaveClass(/dark/);
+    await expect(page.getByRole('heading', { name: /system status/i })).toBeVisible();
 
+    await page.getByRole('button', { name: 'Recruiter mode' }).first().click();
+    await expect(html).toHaveClass(/mode-recruiter/);
+    await expect(page.getByRole('link', { name: 'Experience', exact: true }).first()).toBeVisible();
+
+    await page.reload();
+    await expect(html).toHaveClass(/mode-recruiter/);
+
+    await page.getByRole('button', { name: 'Play mode' }).first().click();
+    await expect(html).toHaveClass(/mode-play/);
+  });
+
+  test('"Skip cutscenes" jumps straight to Recruiter Mode', async ({ page }) => {
+    await page.getByRole('button', { name: /skip cutscenes/i }).click();
+    await expect(page.locator('html')).toHaveClass(/mode-recruiter/);
+  });
+
+  test('a ?view=recruiter link opens the plain view', async ({ page }) => {
+    await page.goto('/?view=recruiter');
+    await expect(page.locator('html')).toHaveClass(/mode-recruiter/);
+    await expect(page.getByText('Open to opportunities')).toBeVisible();
+  });
+
+  test('light/dark toggle works in Recruiter Mode, while Play Mode stays dark', async ({ page }) => {
+    const html = page.locator('html');
+    await expect(page.getByRole('button', { name: /toggle theme/i })).toHaveCount(0);
+
+    await page.getByRole('button', { name: 'Recruiter mode' }).first().click();
     await page.getByRole('button', { name: /toggle theme/i }).first().click();
     await expect(html).not.toHaveClass(/dark/);
 
     await page.reload();
     await expect(html).not.toHaveClass(/dark/);
 
-    await page.getByRole('button', { name: /toggle theme/i }).first().click();
+    await page.getByRole('button', { name: 'Play mode' }).first().click();
     await expect(html).toHaveClass(/dark/);
+  });
+
+  test('Konami code unlocks the New Game+ terminal', async ({ page }) => {
+    // Wait for React to mount so the key listener is attached
+    await expect(page.getByRole('heading', { name: /system status/i })).toBeVisible();
+    for (const key of ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a']) {
+      await page.keyboard.press(key);
+    }
+    const terminal = page.getByRole('dialog', { name: /new game\+ terminal/i });
+    await expect(terminal).toBeVisible();
+
+    const input = terminal.getByRole('textbox', { name: 'Terminal command' });
+    await expect(input).toBeFocused();
+    await input.fill('whoami');
+    await input.press('Enter');
+    await expect(terminal.getByText('Soumyakant Tripathy', { exact: true })).toBeVisible();
+
+    await input.fill('mode recruiter');
+    await input.press('Enter');
+    await expect(page.locator('html')).toHaveClass(/mode-recruiter/);
+
+    await page.keyboard.press('Escape');
+    await expect(terminal).toHaveCount(0);
   });
 
   test('resume download link is present and correct', async ({ page }) => {
@@ -54,7 +105,7 @@ test.describe('Portfolio E2E Tests', () => {
     expect(resume.ok()).toBeTruthy();
     expect(resume.headers()['content-type']).toContain('pdf');
 
-    const images = page.locator('#recognitions img');
+    const images = page.locator('#achievements img');
     await images.first().scrollIntoViewIfNeeded();
     await expect(images).toHaveCount(3);
     for (const src of await images.evaluateAll((imgs) => imgs.map((img) => img.getAttribute('src')))) {
@@ -94,6 +145,13 @@ test.describe('Mobile layout', () => {
 
     await expect(page).toHaveURL(/#skills/);
     await expect(page.locator('#mobile-menu')).toHaveCount(0);
+  });
+
+  test('footer hint opens the terminal on touch screens', async ({ page }) => {
+    await page.getByRole('button', { name: 'Open the secret terminal' }).click();
+    await expect(page.getByRole('dialog', { name: /new game\+ terminal/i })).toBeVisible();
+    await page.getByRole('button', { name: 'Close terminal' }).click();
+    await expect(page.getByRole('dialog')).toHaveCount(0);
   });
 
   test('chatbot panel fits inside the viewport', async ({ page }) => {

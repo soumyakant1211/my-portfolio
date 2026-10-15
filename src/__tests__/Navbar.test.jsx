@@ -1,6 +1,7 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import Navbar from '../components/Navbar';
+import { renderWithMode } from './renderWithMode';
 
 describe('Navbar Component', () => {
   beforeEach(() => {
@@ -9,55 +10,56 @@ describe('Navbar Component', () => {
     window.history.replaceState = vi.fn();
   });
 
-  it('renders all navigation links', () => {
-    render(<Navbar darkMode={false} toggleTheme={() => {}} />);
-    
-    const expectedLinks = ['About', 'Experience', 'Skills', 'Recognitions', 'Contact'];
-    
-    // Check desktop links
-    expectedLinks.forEach(link => {
-      // getByRole 'link' to avoid getting multiple elements if we use getByText (desktop + mobile)
-      const desktopLinks = screen.getAllByRole('link', { name: new RegExp(link, 'i') });
-      expect(desktopLinks.length).toBeGreaterThan(0);
-    });
+  it('uses RPG link names in Play Mode', () => {
+    renderWithMode(<Navbar darkMode toggleTheme={() => {}} />);
+    for (const name of ['Profile', 'Journey', 'Skills', 'Quests', 'Achievements', 'Party Up']) {
+      expect(screen.getByRole('link', { name })).toBeInTheDocument();
+    }
+  });
+
+  it('uses plain link names in Recruiter Mode and hides empty sections', () => {
+    renderWithMode(<Navbar darkMode toggleTheme={() => {}} />, { mode: 'recruiter' });
+    for (const name of ['About', 'Experience', 'Skills', 'Achievements', 'Contact']) {
+      expect(screen.getByRole('link', { name })).toBeInTheDocument();
+    }
+    // No projects yet, so Recruiter Mode doesn't advertise the section
+    expect(screen.queryByRole('link', { name: /projects|quests/i })).not.toBeInTheDocument();
   });
 
   it('renders the home button and scrolls to top when clicked', () => {
-    render(<Navbar darkMode={false} toggleTheme={() => {}} />);
-    
-    const homeBtn = screen.getByText('Home');
-    expect(homeBtn).toBeInTheDocument();
-    
-    fireEvent.click(homeBtn);
+    renderWithMode(<Navbar darkMode toggleTheme={() => {}} />);
+    fireEvent.click(screen.getByText('Home'));
     expect(window.scrollTo).toHaveBeenCalledWith({ top: 0, behavior: 'smooth' });
   });
 
-  it('toggles theme when button is clicked', () => {
+  it('switches view mode from the Play | Recruiter toggle', () => {
+    const setMode = vi.fn();
+    renderWithMode(<Navbar darkMode toggleTheme={() => {}} />, { setMode });
+
+    const [playBtn] = screen.getAllByRole('button', { name: 'Play mode' });
+    const [recruiterBtn] = screen.getAllByRole('button', { name: 'Recruiter mode' });
+    expect(playBtn).toHaveAttribute('aria-pressed', 'true');
+    expect(recruiterBtn).toHaveAttribute('aria-pressed', 'false');
+
+    fireEvent.click(recruiterBtn);
+    expect(setMode).toHaveBeenCalledWith('recruiter');
+  });
+
+  it('only offers the light/dark toggle in Recruiter Mode (Play Mode is always dark)', () => {
+    const { unmount } = renderWithMode(<Navbar darkMode toggleTheme={() => {}} />);
+    expect(screen.queryByRole('button', { name: /toggle theme/i })).not.toBeInTheDocument();
+    unmount();
+
     const toggleThemeMock = vi.fn();
-    render(<Navbar darkMode={false} toggleTheme={toggleThemeMock} />);
-    
-    // There are 2 toggle theme buttons (desktop and mobile), click the first one
-    const toggleBtns = screen.getAllByRole('button', { name: /toggle theme/i });
-    if(toggleBtns.length > 0) {
-      fireEvent.click(toggleBtns[0]);
-    } else {
-      // If aria-label isn't set, try grabbing all buttons and find the sun/moon ones
-      const buttons = screen.getAllByRole('button');
-      // Just click the second button (first is usually Home)
-      fireEvent.click(buttons[1]);
-    }
-    
+    renderWithMode(<Navbar darkMode={false} toggleTheme={toggleThemeMock} />, { mode: 'recruiter' });
+    const toggles = screen.getAllByRole('button', { name: /toggle theme/i });
+    expect(toggles).toHaveLength(2); // desktop + mobile
+    fireEvent.click(toggles[0]);
     expect(toggleThemeMock).toHaveBeenCalled();
   });
 
-  it('labels every theme toggle for screen readers', () => {
-    render(<Navbar darkMode={true} toggleTheme={() => {}} />);
-    // Desktop + mobile toggles
-    expect(screen.getAllByRole('button', { name: /toggle theme/i })).toHaveLength(2);
-  });
-
   it('opens and closes the mobile menu', () => {
-    render(<Navbar darkMode={false} toggleTheme={() => {}} />);
+    renderWithMode(<Navbar darkMode toggleTheme={() => {}} />);
 
     const menuBtn = screen.getByRole('button', { name: 'Open menu' });
     expect(menuBtn).toHaveAttribute('aria-expanded', 'false');

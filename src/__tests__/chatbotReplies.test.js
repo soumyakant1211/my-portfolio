@@ -5,7 +5,7 @@ import { PROFILE } from '../data/profile';
 describe('getBotReply', () => {
   it('answers every suggested prompt with its own topic', () => {
     const expected = {
-      'Tell me about his experience': /4 years of experience/,
+      'Tell me about his experience': /\d\+ years of experience/,
       'What automation frameworks has he built?': /Robot Framework implementations/,
       'What tools does he use?': /core tech stack/,
       'Explain his CI/CD experience': /strong CI\/CD experience/,
@@ -31,7 +31,8 @@ describe('getBotReply', () => {
   it('scrolls to sections for navigation commands', () => {
     expect(getBotReply('show experience').action).toEqual({ type: 'scroll', id: 'experience' });
     expect(getBotReply('take me to skills').action).toEqual({ type: 'scroll', id: 'skills' });
-    expect(getBotReply('go to awards').action).toEqual({ type: 'scroll', id: 'recognitions' });
+    expect(getBotReply('go to awards').action).toEqual({ type: 'scroll', id: 'achievements' });
+    expect(getBotReply('show projects').action).toEqual({ type: 'scroll', id: 'projects' });
     expect(getBotReply('navigate to contact').action).toEqual({ type: 'scroll', id: 'contact' });
   });
 
@@ -50,8 +51,18 @@ describe('getBotReply', () => {
     expect(getBotReply('hi').text).toMatch(/^Hello!/);
     expect(getBotReply('Hey there').text).toMatch(/^Hello!/);
     // "this" / "which" contain "hi" but are not greetings
-    expect(getBotReply('which certifications does he have?').text).toBe(FALLBACK_REPLY);
+    expect(getBotReply('which way?').text).toBe(FALLBACK_REPLY);
     expect(getBotReply('what is this').text).toBe(FALLBACK_REPLY);
+  });
+
+  it('answers project and certification questions while those lists are empty', () => {
+    expect(getBotReply('Do you have any projects?').text).toMatch(/being written up/);
+    expect(getBotReply('Any certifications?').text).toMatch(/working toward/);
+  });
+
+  it('builds answers from the page data', () => {
+    expect(getBotReply('what awards has he won?').text).toMatch(/Rising Star \(Feb 2023\)/);
+    expect(getBotReply('what is his current focus?').text).toContain(PROFILE.focus.join(', '));
   });
 
   it('falls back for off-topic questions', () => {

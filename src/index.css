@@ -1,12 +1,36 @@
 @import "tailwindcss";
 
 @custom-variant dark (&:is(.dark *));
+/* Styles that only apply in Play Mode (the cyberpunk RPG view) */
+@custom-variant play (&:where(.mode-play, .mode-play *));
 
-/* Entrance animations used by sections and popovers */
+/*
+ * Design tokens. Components use these (text-ink, bg-surface, border-line, text-accent...)
+ * so one set of markup can render as the clean Recruiter view (violet, light or dark)
+ * or the Play view (cyan + magenta on dark slate).
+ */
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-body: var(--body);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-2: var(--accent-2);
+  --color-cta: var(--cta);
+  --color-on-cta: var(--on-cta);
+}
+
 @theme {
+  --font-sans: 'Outfit', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* Entrance animations used by sections and popovers */
   --animate-fade-up: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
   --animate-pop-in: pop-in 0.25s cubic-bezier(0.22, 1, 0.36, 1) both;
   --animate-slide-down: slide-down 0.2s ease-out both;
+  --animate-blink: blink 1.1s steps(1) infinite;
 
   @keyframes fade-up {
     from { opacity: 0; transform: translateY(1rem); }
@@ -20,6 +44,55 @@
     from { opacity: 0; transform: translateY(-0.5rem); }
     to { opacity: 1; transform: translateY(0); }
   }
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+}
+
+/* Recruiter Mode, light theme */
+:root {
+  --canvas: #f8fafc;
+  --surface: rgb(255 255 255 / 0.75);
+  --ink: #0f172a;
+  --body: #475569;
+  --muted: #64748b;
+  --line: #e2e8f0;
+  --accent: #7c3aed;
+  --accent-2: #c026d3;
+  /* Solid button fill + its text */
+  --cta: #7c3aed;
+  --on-cta: #ffffff;
+  color-scheme: light;
+}
+
+/* Recruiter Mode, dark theme */
+.dark {
+  --canvas: #020617;
+  --surface: rgb(15 23 42 / 0.4);
+  --ink: #f1f5f9;
+  --body: #94a3b8;
+  --muted: #64748b;
+  --line: #1e293b;
+  --accent: #a78bfa;
+  --accent-2: #e879f9;
+  --cta: #7c3aed;
+  --on-cta: #ffffff;
+  color-scheme: dark;
+}
+
+/* Play Mode — always dark. Two neon accents on slate keep contrast readable. */
+.mode-play {
+  --canvas: #05070d;
+  --surface: rgb(10 16 28 / 0.78);
+  --ink: #e6f6ff;
+  --body: #a9b6c9;
+  --muted: #7f8ca1;
+  --line: rgb(34 211 238 / 0.2);
+  --accent: #22d3ee;
+  --accent-2: #f472d0;
+  --cta: #22d3ee;
+  --on-cta: #031318;
+  color-scheme: dark;
 }
 
 /* Smooth scrolling */
@@ -32,41 +105,82 @@ html:not(.theme-ready) * {
   transition: none !important;
 }
 
-/* Base styles — font is loaded via <link> in index.html, fallback chain here */
 @layer base {
-  html {
-    color-scheme: light;
-  }
-  html.dark {
-    color-scheme: dark;
-  }
   body {
-    font-family: 'Outfit', system-ui, -apple-system, sans-serif;
-    @apply bg-slate-50 text-slate-900 antialiased;
+    @apply bg-canvas text-ink font-sans antialiased;
+  }
+  ::selection {
+    background: color-mix(in oklab, var(--accent) 30%, transparent);
   }
   :focus-visible {
-    @apply outline-2 outline-offset-2 outline-violet-500;
+    @apply outline-2 outline-offset-2 outline-accent;
   }
 }
 
-.dark body {
-  @apply bg-slate-950 text-slate-50;
+/* Recruiter Mode backdrop: two soft accent glows behind the hero */
+.mode-recruiter body {
+  background-image:
+    radial-gradient(ellipse 60% 50% at 85% 0%, color-mix(in oklab, var(--accent) 14%, transparent), transparent),
+    radial-gradient(ellipse 45% 40% at 0% 35%, color-mix(in oklab, var(--accent-2) 9%, transparent), transparent);
+  background-repeat: no-repeat;
 }
 
-/* Glassy surface. Lives in the components layer so per-element utilities (borders,
-   hover shadows) always win. Solid enough to read on the light background. */
+/* Play Mode backdrop: faint HUD grid plus two neon glows */
+.mode-play body {
+  background-image:
+    radial-gradient(circle at 15% 0%, rgb(34 211 238 / 0.10), transparent 40%),
+    radial-gradient(circle at 90% 30%, rgb(244 114 208 / 0.08), transparent 35%),
+    linear-gradient(rgb(34 211 238 / 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(34 211 238 / 0.035) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 44px 44px, 44px 44px;
+  background-attachment: fixed;
+}
+
+/*
+ * Card surface. Lives in the components layer so per-element utilities always win.
+ * Recruiter Mode: soft glass card. Play Mode: angular HUD panel with corner brackets.
+ */
 @layer components {
-  .glass {
-    @apply bg-white/75 backdrop-blur-md shadow-sm shadow-slate-900/5;
+  .panel {
+    position: relative;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    border-radius: 1.5rem;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 1px 2px rgb(15 23 42 / 0.05);
   }
-  .dark .glass {
-    @apply bg-slate-900/40 shadow-none;
+  .dark .panel {
+    box-shadow: none;
+  }
+  .mode-play .panel {
+    border-radius: 0.375rem;
+    box-shadow: 0 0 32px -14px rgb(34 211 238 / 0.45);
+  }
+  .mode-play .panel::before,
+  .mode-play .panel::after {
+    content: '';
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    pointer-events: none;
+  }
+  .mode-play .panel::before {
+    top: -1px;
+    left: -1px;
+    border-top: 2px solid var(--accent);
+    border-left: 2px solid var(--accent);
+  }
+  .mode-play .panel::after {
+    bottom: -1px;
+    right: -1px;
+    border-bottom: 2px solid var(--accent-2);
+    border-right: 2px solid var(--accent-2);
   }
 }
 
 @utility custom-scrollbar {
   scrollbar-width: thin;
-  scrollbar-color: rgb(139 92 246 / 0.4) transparent;
+  scrollbar-color: color-mix(in oklab, var(--accent) 40%, transparent) transparent;
 }
 
 /* Respect users who ask the OS for less motion */

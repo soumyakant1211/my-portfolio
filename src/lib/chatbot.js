@@ -1,4 +1,9 @@
 import { PROFILE } from '../data/profile';
+import { QUESTS } from '../data/quests';
+import { AWARDS, CERTIFICATIONS } from '../data/achievements';
+import { LOADOUT } from '../data/skills';
+import { LEARNING } from '../data/learning';
+import { formatExperience } from './career';
 
 export const WELCOME_MESSAGE = `Hi! I'm Soumyakant's AI Portfolio Assistant.
 
@@ -8,6 +13,7 @@ You can ask about:
 • Playwright & Selenium
 • CI/CD workflows
 • Skills
+• Projects & certifications
 • Resume
 • Contact details`;
 
@@ -27,6 +33,16 @@ export const FALLBACK_REPLY =
 
 const open = (url) => ({ type: 'open', url });
 const scrollTo = (id) => ({ type: 'scroll', id });
+const bullets = (items) => items.map((item) => `• ${item}`).join('\n');
+
+// Built from the data files so the bot never disagrees with the page
+const projectsReply = QUESTS.length
+  ? `He has written up ${QUESTS.length} project case ${QUESTS.length === 1 ? 'study' : 'studies'}:\n${bullets(QUESTS.map((q) => q.title))}`
+  : 'Project case studies are being written up right now. In the meantime, his GitHub has his public work.';
+
+const certificationsReply = CERTIFICATIONS.length
+  ? `Certifications:\n${bullets(CERTIFICATIONS.map((c) => `${c.name} — ${c.issuer} (${c.date})`))}`
+  : "He's working toward his certifications. They'll appear in the Achievements section once earned.";
 
 // Checked top to bottom and the first match wins, so specific intents must come
 // before broad ones (e.g. "CI/CD experience" is a CI/CD question, not an experience one).
@@ -47,7 +63,7 @@ const INTENTS = [
     action: open(PROFILE.linkedin),
   },
   {
-    pattern: /\b(show|go to|navigate to|take me to)\b.*\bexperience\b/,
+    pattern: /\b(show|go to|navigate to|take me to)\b.*\b(experience|journey)\b/,
     reply: 'Navigating to the Experience section...',
     action: scrollTo('experience'),
   },
@@ -57,9 +73,14 @@ const INTENTS = [
     action: scrollTo('skills'),
   },
   {
-    pattern: /\b(show|go to|navigate to|take me to)\b.*\b(recognitions?|awards?)\b/,
-    reply: 'Navigating to the Recognitions section...',
-    action: scrollTo('recognitions'),
+    pattern: /\b(show|go to|navigate to|take me to)\b.*\b(recognitions?|awards?|achievements?)\b/,
+    reply: 'Navigating to the Achievements section...',
+    action: scrollTo('achievements'),
+  },
+  {
+    pattern: /\b(show|go to|navigate to|take me to)\b.*\b(projects?|quests?)\b/,
+    reply: 'Navigating to the Projects section...',
+    action: scrollTo('projects'),
   },
   {
     pattern: /\b(show|go to|navigate to|take me to)\b.*\bcontact\b/,
@@ -70,6 +91,19 @@ const INTENTS = [
     pattern: /\bci\s*\/?\s*cd\b|\bpipelines?\b|\bjenkins\b|\bcircleci\b|\bgithub actions\b/,
     reply:
       'He has strong CI/CD experience, seamlessly integrating test automation into Jenkins, CircleCI, and GitHub Actions to ensure continuous testing and immediate feedback on PRs.',
+  },
+  {
+    pattern: /\b(projects?|quests?|case stud(y|ies))\b/,
+    reply: projectsReply,
+  },
+  {
+    pattern: /\b(certifications?|certificates?|certified)\b/,
+    reply: certificationsReply,
+  },
+  {
+    pattern: /\b(awards?|recognitions?|achievements?)\b/,
+    reply: `He has won ${AWARDS.length} company awards:\n${bullets(AWARDS.map((a) => `${a.title} (${a.date})`))}`,
+    action: scrollTo('achievements'),
   },
   {
     pattern: /\bframeworks?\b/,
@@ -83,13 +117,8 @@ const INTENTS = [
 He also integrated automated execution into CI/CD pipelines using Jenkins, CircleCI, and GitHub Actions.`,
   },
   {
-    pattern: /\b(learning|exploring)\b/,
-    reply: `Currently exploring:
-• Agentic AI
-• AI-assisted testing
-• LangChain
-• modern Playwright ecosystems
-• scalable automation architecture`,
+    pattern: /\b(learning|exploring|focus)\b/,
+    reply: `Currently exploring:\n${bullets(LEARNING.map((node) => node.name))}\n\nCurrent focus: ${PROFILE.focus.join(', ')}.`,
   },
   {
     pattern: /\b(playwright|selenium)\b/,
@@ -98,13 +127,11 @@ He also integrated automated execution into CI/CD pipelines using Jenkins, Circl
   },
   {
     pattern: /\b(tools?|skills?|stack|tech|technologies)\b/,
-    reply: `His core tech stack includes: Python, JavaScript, Selenium, Playwright, PyTest, Docker, Postman, AWS S3, Jenkins, and GitHub Actions.
-
-He specializes in modern scalable architecture and AI-assisted testing.`,
+    reply: `His core tech stack:\n${bullets(LOADOUT.map(({ slot, items }) => `${slot}: ${items.join(', ')}`))}`,
   },
   {
     pattern: /\b(experience|work|years|history|career|background)\b/,
-    reply: `Soumyakant is a Senior Software Engineer (SDET) with 4 years of experience in QA automation and enterprise testing.
+    reply: `Soumyakant is a ${PROFILE.title} (${PROFILE.classes.join(' · ')}) with ${formatExperience().toLowerCase()} of experience at ${PROFILE.company}.
 
 He has worked extensively on Selenium, Playwright, PyTest, API testing, and CI/CD automation in healthcare compliance workflows.
 

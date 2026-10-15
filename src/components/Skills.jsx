@@ -1,104 +1,75 @@
-import { Code2, Bug, GitBranch, Webhook, Cloud, GitFork, Sparkles } from 'lucide-react';
+import { Bug, Code2, GitBranch, Webhook, Cloud, GitFork, Swords } from 'lucide-react';
+import SectionHeading from './SectionHeading';
+import { SKILLS, SKILL_TIERS, LOADOUT } from '../data/skills';
+import { useMode } from '../context/mode';
 
-const skillCategories = [
-  {
-    title: "Automation",
-    icon: <Bug size={24} />,
-    items: [
-      "Selenium", 
-      "Playwright",
-      "Robot Framework", 
-      "PyTest"
-    ]
-  },
-  {
-    title: "Languages",
-    icon: <Code2 size={24} />,
-    items: [
-      "Python", 
-      "JavaScript"
-    ]
-  },
-  {
-    title: "CI/CD",
-    icon: <GitBranch size={24} />,
-    items: [
-        "Jenkins", 
-        "CircleCI", 
-        "GitHub Actions"
-    ]
-  },
-  {
-    title: "Cloud",
-    icon: <Cloud size={24} />,
-    items: [
-        "AWS S3",
-        "AWS IAM",
-        "Cloud Workflows"
-    ]
-  },
-  {
-    title: "API Testing",
-    icon: <Webhook size={24} />,
-    items: [
-        "Postman",
-        "REST Assured",
-        "Requests"
-    ]
-  },
-  {
-    title: "Tools & VCS",
-    icon: <GitFork size={24} />,
-    items: [
-        "Git",
-        "GitHub",
-        "Bitbucket"
-    ]
-  },
-  {
-    title: "Currently Exploring",
-    icon: <Sparkles size={24} />,
-    items: [
-        "Agentic AI",
-        "AI-Assisted Testing",
-        "LangChain",
-        "Modern Playwright"
-    ]
-  }
-];
+const SLOT_ICONS = {
+  Automation: Bug,
+  Languages: Code2,
+  'CI/CD': GitBranch,
+  Cloud,
+  'API Testing': Webhook,
+  'Tools & VCS': GitFork,
+};
 
-const Skills = () => {
+const Skills = ({ index }) => {
+  const { isPlay } = useMode();
+
   return (
     <section id="skills" className="py-10 md:py-12 scroll-mt-20 animate-fade-up">
-      <h2 className="text-3xl font-bold mb-12 flex items-center gap-3 text-slate-800 dark:text-slate-100">
-        <span className="text-violet-500 font-mono">02.</span> Core Skills
-      </h2>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-        {skillCategories.map((category) => (
-          <div 
-            key={category.title}
-            className="p-8 rounded-3xl glass hover:-translate-y-2 hover:scale-[1.02] hover:shadow-2xl hover:shadow-violet-500/10 transition-all duration-300 border border-slate-200/80 dark:border-slate-800 hover:border-violet-500/30 dark:hover:border-violet-500/30 group"
-          >
-            <div className="flex items-center gap-4 mb-6">
-              <div className="p-3 rounded-2xl bg-violet-100 dark:bg-violet-900/40 text-violet-600 dark:text-violet-400 group-hover:scale-110 group-hover:bg-violet-500 group-hover:text-white shadow-sm transition-all" aria-hidden="true">
-                {category.icon}
-              </div>
-              <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100">{category.title}</h3>
-            </div>
-            
-            <div className="flex flex-wrap gap-2.5">
-              {category.items.map((skill) => (
-                <span 
-                  key={skill} 
-                  className="px-4 py-2 rounded-xl text-sm font-semibold tracking-wide bg-slate-100 text-slate-700 dark:bg-slate-800/50 dark:text-slate-300 border border-slate-200 dark:border-slate-700/50 hover:-translate-y-0.5 hover:bg-violet-500 hover:text-white hover:border-violet-500 dark:hover:bg-violet-500 dark:hover:text-white dark:hover:border-violet-500 shadow-sm transition-all cursor-default"
-                >
-                  {skill}
-                </span>
+      <SectionHeading index={index} play="Skills" plain="Skills" tagline="proficiency & loadout" icon={Swords} />
+
+      {/* Tiered skills, each backed by evidence instead of a made-up percentage */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
+        {SKILL_TIERS.map((tier) => (
+          <div key={tier.id} className="panel p-6 md:p-8">
+            <h3 className="flex items-center gap-2 mb-5 text-lg font-bold text-ink play:font-mono play:uppercase play:tracking-widest play:text-base">
+              {isPlay && <span className="text-accent-2" aria-hidden="true">{tier.glyph}</span>}
+              {isPlay ? tier.play : tier.plain}
+            </h3>
+            <ul className="space-y-4">
+              {SKILLS.filter((skill) => skill.tier === tier.id).map((skill) => (
+                <li key={skill.name} className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3">
+                  <span className="font-bold text-ink sm:w-52 shrink-0 play:font-mono play:text-sm">{skill.name}</span>
+                  {skill.evidence && <span className="text-sm text-body leading-relaxed">{skill.evidence}</span>}
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
         ))}
+      </div>
+
+      {/* Full toolbox */}
+      <h3 className="mb-5 text-xl font-bold text-ink play:font-mono play:uppercase play:tracking-widest play:text-base">
+        {isPlay ? (
+          <><span className="text-accent-2" aria-hidden="true">⚙ </span>Loadout</>
+        ) : (
+          'Toolbox'
+        )}
+      </h3>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        {LOADOUT.map(({ slot, items }) => {
+          const Icon = SLOT_ICONS[slot] ?? Code2;
+          return (
+            <div key={slot} className="panel p-6 group transition-all hover:-translate-y-1 hover:border-accent/40">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-2.5 rounded-xl play:rounded-sm bg-accent/10 text-accent group-hover:bg-cta group-hover:text-on-cta transition-colors" aria-hidden="true">
+                  <Icon size={20} />
+                </div>
+                <h4 className="font-bold text-ink play:font-mono play:uppercase play:text-sm play:tracking-wider">
+                  {isPlay ? `Slot · ${slot}` : slot}
+                </h4>
+              </div>
+              <ul className="flex flex-wrap gap-2">
+                {items.map((item) => (
+                  <li key={item} className="px-3 py-1.5 rounded-lg play:rounded-sm text-sm font-semibold bg-canvas/60 text-body border border-line play:font-mono play:text-xs">
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          );
+        })}
       </div>
     </section>
   );

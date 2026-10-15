@@ -1,35 +1,40 @@
 <!doctype html>
-<html lang="en" class="dark">
+<html lang="en" class="dark mode-play">
   <head>
     <meta charset="UTF-8" />
 
-    <!-- 1. Theme script FIRST — prevents any flash of wrong theme before CSS loads -->
+    <!-- 1. View-mode + theme script FIRST — prevents a flash of the wrong look before CSS loads.
+         Keep in sync with src/lib/preferences.js -->
     <script>
       try {
-        var t = localStorage.getItem('theme');
-        if (t === 'light') document.documentElement.classList.remove('dark');
-        else document.documentElement.classList.add('dark');
+        var root = document.documentElement;
+        var view = new URLSearchParams(location.search).get('view');
+        var mode = view === 'play' || view === 'recruiter' ? view : localStorage.getItem('view-mode');
+        if (mode !== 'recruiter') mode = 'play';
+        var dark = mode === 'play' || localStorage.getItem('theme') !== 'light';
+        root.classList.toggle('dark', dark);
+        root.classList.toggle('mode-play', mode === 'play');
+        root.classList.toggle('mode-recruiter', mode === 'recruiter');
       } catch (_) {}
     </script>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="color-scheme" content="dark light" />
-    <meta name="theme-color" content="#020617" media="(prefers-color-scheme: dark)" />
-    <meta name="theme-color" content="#f8fafc" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#05070d" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
-    <title>Soumyakant Tripathy | SDET Engineer</title>
-    <meta name="description" content="Senior SDET &amp; QA Automation Engineer specializing in Python, Selenium, Playwright, and CI/CD pipelines. Exploring modern AI-driven testing." />
+    <title>Soumyakant Tripathy | Senior Software Engineer</title>
+    <meta name="description" content="Senior Software Engineer (Backend · Automation · Cloud) building test automation frameworks, CI/CD pipelines and Python tooling on AWS. Now focused on backend engineering, cloud and agentic AI." />
     <meta name="author" content="Soumyakant Tripathy" />
 
     <!-- Open Graph / LinkedIn Preview -->
     <meta property="og:type" content="profile" />
     <meta property="og:site_name" content="Soumyakant Tripathy" />
-    <meta property="og:title" content="Soumyakant Tripathy | SDET Engineer" />
-    <meta property="og:description" content="Senior SDET &amp; QA Automation Engineer specializing in Python, Selenium, Playwright, and CI/CD pipelines." />
+    <meta property="og:title" content="Soumyakant Tripathy | Senior Software Engineer" />
+    <meta property="og:description" content="Senior Software Engineer — Backend · Automation · Cloud. Explore the portfolio in Play Mode or skip the cutscenes." />
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="Soumyakant Tripathy | SDET Engineer" />
-    <meta name="twitter:description" content="Senior SDET &amp; QA Automation Engineer specializing in Python, Selenium, Playwright, and CI/CD pipelines." />
+    <meta name="twitter:title" content="Soumyakant Tripathy | Senior Software Engineer" />
+    <meta name="twitter:description" content="Senior Software Engineer — Backend · Automation · Cloud. Explore the portfolio in Play Mode or skip the cutscenes." />
 
     <!-- Structured data so search engines can show a rich profile result -->
     <script type="application/ld+json">
@@ -37,9 +42,9 @@
         "@context": "https://schema.org",
         "@type": "Person",
         "name": "Soumyakant Tripathy",
-        "jobTitle": "Senior Software Engineer (SDET)",
+        "jobTitle": "Senior Software Engineer",
         "worksFor": { "@type": "Organization", "name": "Relevance Lab" },
-        "knowsAbout": ["Test Automation", "Selenium", "Playwright", "PyTest", "API Testing", "CI/CD"],
+        "knowsAbout": ["Backend Engineering", "Test Automation", "Cloud", "Python", "Selenium", "Playwright", "PyTest", "CI/CD", "Agentic AI"],
         "sameAs": [
           "https://github.com/soumyakant1211",
           "https://www.linkedin.com/in/soumyakant-tripathy/"
@@ -50,10 +55,10 @@
     <!-- 2. Non-render-blocking font loading via preconnect + preload -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap" media="print" onload="this.media='all'" />
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Outfit:wght@400;600;700;800;900&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Outfit:wght@400;600;700;800;900&display=swap" media="print" onload="this.media='all'" />
     <noscript>
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap" />
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Outfit:wght@400;600;700;800;900&display=swap" />
     </noscript>
 
     <!-- 3. DNS prefetch for GitHub/LinkedIn links -->
